@@ -13,7 +13,8 @@ class Gag extends Dot_Model
  		$dotPaginator = new Dot_Paginator($select, $page, $this->settings->resultsPerPage);
 		return $dotPaginator->getData();
 	}
-	public function getGag($id)
+	// i have modified method name form getGag to getGagById
+	public function getGagById($id)
 	{	
 		$select = $this->db->select()
 						   ->from('post')
@@ -22,5 +23,26 @@ class Gag extends Dot_Model
 		$result=$this->db->fetchAll($select);
 		return $result;
 
+	}
+	//get the comment by the gag id
+	public function getComments($gagId)
+	{
+		$select=$this->db->select()
+						->from('comment')
+						->where('idPost = ?', $gagId);
+		$result=$this->db->fetchAll($select);
+		return $result;
+	}
+	// add a new Gag with post method
+	public function addGag($data)
+	{
+
+		$this->db->insert('post',$data);
+	}
+	// add a new comment for an atricle with post method
+	public function addComment($data)
+	{
+
+		$this->db->insert('comment',$data);
 	}
 }

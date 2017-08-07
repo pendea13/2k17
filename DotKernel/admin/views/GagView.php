@@ -34,4 +34,34 @@ class Gag_View extends View
 			}
 		}
 	}
+	//add template for adding gag
+	public function showAddGag($templateFile="" )
+	{
+		if ($templateFile != '') $this->templateFile = $templateFile;
+		$this->tpl->setFile('tpl_main', 'gag/' . $this->templateFile . '.tpl');
+	}
+	// showing gag by id
+	public function showGagById($templateFile='', $articleList)
+	{ 
+		if ($templateFile != '') $this->templateFile = $templateFile;
+		$this->tpl->setFile('tpl_main', 'gag/' . $this->templateFile . '.tpl');
+		foreach ($articleList as $article) {
+			foreach ($article as $articleKey => $articleValue) {
+			$this->tpl->setVar(strtoupper("GAG_".$articleKey),$articleValue);
+			}
+		}
+	}
+	// showing commend list for Gag
+	public function showComments($templateFile='', $commentList)
+	{
+		if ($templateFile != '') $this->templateFile = $templateFile;
+		$this->tpl->setFile('tpl_main', 'gag/' . $this->templateFile . '.tpl');
+		$this->tpl->setBlock('tpl_main','comment_list',"comment_list_block");
+		foreach ($commentList as $comment) {
+			foreach ($comment as $commentKey => $commentValue) {
+			$this->tpl->setVar(strtoupper("COMMENT_".$commentKey),$commentValue);
+			}
+			$this->tpl->parse("comment_list_block", 'comment_list', true);
+		}
+	}
 }
