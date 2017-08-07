@@ -19,8 +19,8 @@
 					<table class="action_table">
 						<tr>
 							<td width="20%"><a href="{SITE_URL}/admin/gag/edit/id/{GAG_ID}" title="Edit/Update" class="edit_state">Edit</a></td>
-							<td width="25%"><a href="{SITE_URL}/admin/article/delete/id/{ARTICLE_ID}" title="Delete" class="delete_state">Delete</a></td>
-							<td width="25%"><a href="{SITE_URL}/admin/article/show/id/{ARTICLE_ID}" title="Show Article" class="logins_state">Show</a></td>	
+							<td width="25%"><a href="{SITE_URL}/admin/article/delete/id/{GAG_ID}" title="Delete" class="delete_state">Delete</a></td>
+							<td width="25%"><a href="{SITE_URL}/admin/gag/show/id/{GAG_ID}" title="Show Article" class="logins_state">Show</a></td>	
 						</tr>
 					</table>
 				</td>
