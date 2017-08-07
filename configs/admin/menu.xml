@@ -109,6 +109,23 @@
 				</subItem>
 				</subItems>
 		</item>
+		<item>
+			<title>Gags</title>
+			<link>gag/list</link>
+			<description>list all items</description>
+				<subItems>
+					<subItem>
+					<title>Gag List</title>
+					<link>gag/list/</link>
+					<description>Article List</description>
+				</subItem>
+				<subItem>
+					<title>Add Gag</title>
+					<link>article/add/</link>
+					<description>Add Article</description>
+				</subItem>
+				</subItems>
+		</item>
 	</menu>
 </config>
 </menus>

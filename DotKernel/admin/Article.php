@@ -19,7 +19,7 @@ class Article extends Dot_Model
 	{
 		$this->db->delete('article', 'id = ' . $id);
 	}
-		public function addArticle($data)
+	public function addArticle($data)
 	{
 		// add a new atricle with post method
 

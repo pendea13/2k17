@@ -10,6 +10,7 @@
 		<admin>System</admin>
 		<admin>User</admin>
 		<admin>Article</admin>
+		<admin>Gag</admin>
 		<rss>Sample</rss>
 		<mobile>Page</mobile>
 	</controllers>

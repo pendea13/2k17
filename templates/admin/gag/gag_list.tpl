@@ -10,23 +10,22 @@
 			</tr>
 		</thead>
 		<tbody>
-		<!-- BEGIN article_list -->
+		<!-- BEGIN gag_list -->
 			<tr>
-				<td style="text-align: center;">{ARTICLE_ID}</td>
-				<td><a href="{SITE_URL}/admin/article/show/id/{ARTICLE_ID}">{ARTICLE_CONTENT}</a> </td>
-				<td>{ARTICLE_DATE}</td>
+				<td style="text-align: center;">{GAG_ID}</td>
+				<td><!-- <a href="{SITE_URL}/admin/gag/show/id/{ARTICLE_ID}"> -->{GAG_URLIMAGE}<!-- </a> --> </td>
+				<td>{GAG_TITLE}</td>
 				<td>
 					<table class="action_table">
 						<tr>
-							<td width="20%"><a href="{SITE_URL}/admin/article/edit/id/{ARTICLE_ID}" title="Edit/Update" class="edit_state">Edit</a></td>
+							<td width="20%"><a href="{SITE_URL}/admin/gag/edit/id/{GAG_ID}" title="Edit/Update" class="edit_state">Edit</a></td>
 							<td width="25%"><a href="{SITE_URL}/admin/article/delete/id/{ARTICLE_ID}" title="Delete" class="delete_state">Delete</a></td>
-							<td width="25%"><a href="{SITE_URL}/admin/article/show/id/{ARTICLE_ID}" title="Show Article" class="logins_state">Show</a></td>
-							
-							</tr>
+							<td width="25%"><a href="{SITE_URL}/admin/article/show/id/{ARTICLE_ID}" title="Show Article" class="logins_state">Show</a></td>	
+						</tr>
 					</table>
 				</td>
 			</tr>
-		<!-- END article_list -->
+		<!-- END gag_list -->
 		</tbody>
 	</table>
 </div>
