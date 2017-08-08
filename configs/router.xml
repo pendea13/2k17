@@ -32,6 +32,7 @@
 				<Admin>account</Admin>
 				<System>dashboard</System>
 				<User>list</User>
+				<Gag>list</Gag>
 			</admin>
 			<mobile>
 				<Page>home</Page>

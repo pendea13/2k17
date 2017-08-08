@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<dots>
+		<variable option="global">
+		</variable>
+		<variable option="admin">
+			<pageTitle>
+				<action>
+					<list>Gags</list>
+					<add>Add Gag</add>
+					<show>Show Gag</show>
+					<edit>Edit Gag</edit>
+				</action>
+			</pageTitle>
+			<errorMessage>			
+				<addGag>Adding gag faild !</addGag>
+				<invalidImage>Invalid Image !</invalidImage>
+				<gagDeleteFail>Gag Delete Faild!</gagDeleteFail>
+			</errorMessage>
+			<infoMessage>
+				<gagAdd>Gag created ! </gagAdd>
+				<gagUpdate>Gag updated ! </gagUpdate>
+				<gagDelete>Gag was deleted ! </gagDelete>
+			</infoMessage>
+			<warningMessage>
+				<userPermission>You don't have enough credentials to access this url.</userPermission>
+			</warningMessage>
+		</variable>
+		<variable option="frontend">
+			<pageTitle>
+				<action>
+					<list>Gags</list>
+					<show>Gag</show>
+				</action>
+			</pageTitle>
+		</variable>
+		<variable option="mobile">
+		</variable>			
+	</dots>
+</config>
