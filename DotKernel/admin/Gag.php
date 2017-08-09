@@ -29,9 +29,50 @@ class Gag extends Dot_Model
 	{
 		$select=$this->db->select()
 						->from('comment')
-						->where('idPost = ?', $gagId);
+						->where('idPost = ?', $gagId)
+						->join('user', 'comment.idUser = user.id', ['username' => 'username']);
 		$result=$this->db->fetchAll($select);
 		return $result;
+	}
+	public function getCommentsParents($gagId)
+	{
+		$select=$this->db->select()
+						->from('comment')
+						->where('idPost = ?', $gagId)
+						->where('parent_id = ?', 0)
+						->join('user', 'comment.idUser = user.id', ['username' => 'username']);
+		$result=$this->db->fetchAll($select);
+		return $result;
+	}
+	// making an array with comments and replys
+	public function getCommentByArticleId($id)
+	{
+		$comepletedData = [];
+		$parentsComments= $this->getCommentsParents($id);
+		foreach ($parentsComments as $key => $value) {
+			$replies = $this->getCommentReplytByCommentId($value['id']);
+			$comepletedData[$value['id']]['content'] = $value['content'];
+			$comepletedData[$value['id']]['idUser'] = $value['idUser'];
+			$comepletedData[$value['id']]['username'] = $value['username'];
+			$comepletedData[$value['id']]['date'] = $value['date'];
+			$comepletedData[$value['id']]['parent_id'] = $value['parent_id'];
+			$comepletedData[$value['id']]['id'] = $value['id'];
+			if(isset($replies) && !empty($replies))
+			{
+				$comepletedData[$value['id']]['replies'] = $replies;
+			}
+		}
+		return $comepletedData;
+	}
+	//get coment reply by coment id
+	public function getCommentReplytByCommentId($id)
+	{
+		$select = $this->db->select()
+	                    ->from('comment',array('content','date','idUser', 'id','parent_id'))
+	                    ->where('parent_id = ?', $id)
+	                    ->join('user','user.id = comment.idUser','username');
+	    $result = $this->db->fetchAll($select);
+	    return $result;
 	}
 	// add a new Gag with post method
 	public function addGag($data)
@@ -53,4 +94,9 @@ class Gag extends Dot_Model
 	{
 		$this->db->delete('post', 'id = ' . $id);
 	}
+	 //updates a comment into the table comment
+    public function editCommentById($a, $commentId)
+    {
+        $update = $this->db->update('comment', $a, 'id = ' . $commentId);
+    }
 }

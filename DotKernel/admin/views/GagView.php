@@ -57,11 +57,28 @@ class Gag_View extends View
 		if ($templateFile != '') $this->templateFile = $templateFile;
 		$this->tpl->setFile('tpl_main', 'gag/' . $this->templateFile . '.tpl');
 		$this->tpl->setBlock('tpl_main','comment_list',"comment_list_block");
+		$this->tpl->setBlock('comment_list','comment_reply','comment_reply_block');
 		foreach ($commentList as $comment) {
-			foreach ($comment as $commentKey => $commentValue) {
-			$this->tpl->setVar(strtoupper("COMMENT_".$commentKey),$commentValue);
-			}
+			$this->tpl->setVar(strtoupper("COMMENT_USERNAME"),$comment['username']);
+			$this->tpl->setVar(strtoupper("COMMENT_ID"),$comment['id']);
+			$this->tpl->setVar(strtoupper("COMMENT_CONTENT"),$comment['content']);
+			$this->tpl->setVar(strtoupper("COMMENT_DATE"),$comment['date']);
+			//Zend_debug::dump($comment['replies']);
+			$this->tpl->parse('comment_reply_block','');
+			if(isset($comment['replies'])) {
+                foreach($comment['replies'] as $replyKey => $reply) {
+                    $this->tpl->setVar('REPLY_USERNAME',$reply['username']);
+                    $this->tpl->setVar('REPLY_ID',$reply['id']);
+                    $this->tpl->setVar('REPLY_CONTENT',$reply['content']);
+					$this->tpl->setVar('REPLY_DATE',$reply['date']);
+					 $this->tpl->parse('comment_reply_block','comment_reply',true);
+                    }
+                   
+                }
+			
 			$this->tpl->parse("comment_list_block", 'comment_list', true);
 		}
 	}
+
+
 }

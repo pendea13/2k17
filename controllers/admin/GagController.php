@@ -44,19 +44,29 @@ switch ($registry->requestAction)
 		break;
 	case 'show':
 		$singelGagData=$gagModel->getGagById($registry->request["id"]);
-		$commentsList=$gagModel->getComments($registry->request["id"]);
-		$gagView->showGagById('complet_gag',$singelGagData);
-		$gagView->showComments('complet_gag',$commentsList);
+		$commentsList=$gagModel->getCommentByArticleId($registry->request["id"]);
 		if ($_SERVER['REQUEST_METHOD'] === "POST")
 		{
-			$data=['idUser'=>1,
-					'content'=>$_POST["comment"],
-					'idPost'=>$registry->request["id"],
-					'parent_id'=>$_POST['parent_id']
-			];
-		$gagModel->addComment($data);
-		header('Location: '.$registry->configuration->website->params->url.'/admin/gag/show/id/'.$registry->request["id"]);
-		}
+			 if (array_key_exists('id', $_POST)) {
+                        $comment = [
+                                'content' => $_POST['comment']
+                                ];
+                        $gagModel->editCommentById($comment, $_POST['id']);
+						header('Location: '.$registry->configuration->website->params->url.'/admin/gag/show/id/'.$registry->request["id"]);
+                    } else {
+						$data=['idUser'=>1,
+						'content'=>$_POST["comment"],
+						'idPost'=>$registry->request["id"],
+						'parent_id'=>$_POST['parent_id']
+						];
+						$gagModel->addComment($data);
+						header('Location: '.$registry->configuration->website->params->url.'/admin/gag/show/id/'.$registry->request["id"]);
+                    }                    
+        }
+
+	
+		$gagView->showGagById('complet_gag',$singelGagData);
+		$gagView->showComments('complet_gag',$commentsList);
 		break;
 	case 'delete':
 		if($_SERVER['REQUEST_METHOD'] === "POST")
