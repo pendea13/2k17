@@ -9,7 +9,7 @@
 			</li>
 			<li class="clearfix">
 				<label>Title</label>
-				<input type="text" name="content" value="{GAG_TITLE}" >
+				<input type="text" name="title" value="{GAG_TITLE}" >
 			</li>
 			<li class="clearfix">
 				<label>Img</label>

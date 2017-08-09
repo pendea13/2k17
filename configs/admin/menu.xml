@@ -121,8 +121,8 @@
 				</subItem>
 				<subItem>
 					<title>Add Gag</title>
-					<link>article/add/</link>
-					<description>Add Article</description>
+					<link>gag/add/</link>
+					<description>Add Gag</description>
 				</subItem>
 				</subItems>
 		</item>

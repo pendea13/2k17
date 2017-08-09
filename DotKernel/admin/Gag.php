@@ -45,4 +45,12 @@ class Gag extends Dot_Model
 
 		$this->db->insert('comment',$data);
 	}
+	public function updateGag($data , $id)
+	{
+		$this->db->update('post', $data, 'id = '.$id);
+	}
+	public function deleteGag($id)
+	{
+		$this->db->delete('post', 'id = ' . $id);
+	}
 }
