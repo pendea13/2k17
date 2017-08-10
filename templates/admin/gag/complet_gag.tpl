@@ -13,8 +13,26 @@ $(document).ready(function(){
 		var replying = $(this).attr("id");
         $(this).replaceWith('<form  method="post" action=""><input type="hidden" name="parent_id" value="'+replying+'"><label for="comment">Comment:</label><textarea name="comment"></textarea><button type="submit">Reply</button></form>');
     	});
+  
 
 });
+var siteUrl='{SITE_URL}';
+  function like(id)
+  {
+
+    $.ajax({
+        url: siteUrl + "/admin/gag/like",
+        type: "POST",
+        dataType: "Json",
+        data : {id: id},
+        success:function(response){
+          var id = response['id'];
+          if (id == 1) {
+            $("#like").text('unlike');
+          }
+        }
+        });
+  }
 </script>
 <div class="jumbotron">
 <div class="row">
@@ -27,7 +45,8 @@ $(document).ready(function(){
         <img src="{GAG_URLIMAGE}" width="420">
     </div>
 </div>
-
+<button onclick='like({GAG_ID});' id="like">Like</button>
+<button onclick='like({GAG_ID});' id="dislike">Dislike</button>
 <div class="media">
 <!-- BEGIN comment_list -->
 <div class="panel panel-default">
@@ -38,6 +57,7 @@ $(document).ready(function(){
    <p class="content" no={COMMENT_ID}>{COMMENT_CONTENT}</p>
    
     <button id="{COMMENT_ID}" class="edit btn btn-default">Edit</button>
+    <button onclick="window.location='{SITE_URL}/admin/gag/delete-comment/id/{COMMENT_ID}';" title="Delete" class="delete_state">Delete</button>
      <p>Replys :</p>
     <!-- BEGIN comment_reply -->
         <div class="panel panel-default">
@@ -45,6 +65,7 @@ $(document).ready(function(){
 			<div class="panel-body">
       <p class="content" no={REPLY_ID}>{REPLY_CONTENT}</p>
       <button id="{REPLY_ID}" class="edit btn btn-default">Edit</button>
+      <button onclick="window.location='{SITE_URL}/admin/gag/delete-comment/id/{REPLY_ID}';" title="Delete" class="delete_state">Delete</button>
       </div>
 		</div>
      <!-- END comment_reply -->

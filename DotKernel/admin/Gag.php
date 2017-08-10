@@ -24,6 +24,16 @@ class Gag extends Dot_Model
 		return $result;
 
 	}
+	public function getCommentById($id)
+	{	
+		$select = $this->db->select()
+						   ->from('comment')
+						   ->where('id= ?',$id);
+ 		// $dotPaginator = new Dot_Paginator($select, $page, $this->settings->resultsPerPage);
+		$result=$this->db->fetchAll($select);
+		return $result;
+
+	}
 	//get the comment by the gag id
 	public function getComments($gagId)
 	{
@@ -94,9 +104,35 @@ class Gag extends Dot_Model
 	{
 		$this->db->delete('post', 'id = ' . $id);
 	}
+
+	public function deleteComment($id)
+	{
+		$this->db->delete('comment', 'id = ' . $id);
+		$this->db->delete('comment', 'parent_id = ' . $id);
+	}
 	 //updates a comment into the table comment
     public function editCommentById($a, $commentId)
     {
-        $update = $this->db->update('comment', $a, 'id = ' . $commentId);
+        $this->db->update('comment', $a, 'id = ' . $commentId);
+    }
+    //add Like or dislke on gag
+    public function addLikeOrDislikeGag($data)
+    {
+    	$this->db->insert('postLike',$data);
+    }
+    //edit like on gag
+    public function editLike($a,$likeId)
+    {
+    	$this->db->update('postLike', $a, 'id = ' . $likeId);
+    }
+    // get like 
+    public function getLike ($postId, $userId)
+    {
+    	$select = $this->db->select()
+						   ->from('postLike')
+						   ->where('id_post= ?', $postId)
+						   ->where('id_user= ?', $userId);
+		$result=$this->db->fetchAll($select);
+		return $result[0];
     }
 }

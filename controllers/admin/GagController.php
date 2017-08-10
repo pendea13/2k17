@@ -26,7 +26,6 @@ switch ($registry->requestAction)
 		break;
 	case 'add':
 		// adding a new gag action
-		$gagView->showAddGag('gag_add');
 		if ($_SERVER['REQUEST_METHOD'] === "POST")
 				{
 					$uploaddir = 'externals/gags/';
@@ -41,6 +40,7 @@ switch ($registry->requestAction)
 				header('Location: '.$registry->configuration->website->params->url.'/admin/gag/list');
 				exit;
 				}
+		$gagView->showAddGag('gag_add');
 		break;
 	case 'show':
 		$singelGagData=$gagModel->getGagById($registry->request["id"]);
@@ -97,5 +97,64 @@ switch ($registry->requestAction)
 		// delete page confirmation
 		$gagView->showGagById('delete_gag', $data);
 		break;
+	case 'delete-comment':
+		if($_SERVER['REQUEST_METHOD'] === "POST")
+		{
+			
+			
+			if ('on' == $_POST['confirm'])
+			{
+				// delete gag
+				$gagModel->deleteComment($registry->request['id']);
+				$registry->session->message['txt'] = $option->infoMessage->gagDelete;
+				$registry->session->message['type'] = 'info';
+			}
+			else
+			{
+				$registry->session->message['txt'] = $option->errorMessage->gagDeleteFail;
+				$registry->session->message['type'] = 'error';
+			}
+			header('Location: '.$registry->configuration->website->params->url. '/' . $registry->requestModule . '/' . $registry->requestController. '/list/');
+			exit;
+		}
+		if (!$registry->request['id'])
+		{
+			header('Location: '.$registry->configuration->website->params->url. '/' . $registry->requestModule . '/' . $registry->requestController. '/list/');
+			exit;
+		}
+		$data = $gagModel->getCommentById($registry->request['id']);
+		// delete page confirmation
+		$gagView->showComment('delete_comment', $data);
+		break;
+	case 'like':
+		if (isset($_POST['id'])||!empty($_POST['id']))
+		{
+				$like=$gagModel->getLike($_POST['id'],1);
+				// var_dump($like);
+				// exit();
+				if (isset($like)) 
+				{
+						if($like['like']=='1')
+						{
+							$editLike=['like'=>'0'];
+						}
+						$gagModel->editLike($editLike,$like['id']);
+						$result=['success'=>"true",
+								"id"=>1];
+				} 
+				else 
+				{
 
+						$data=['id_post'=>$_POST['id'],
+								'id_user'=>1,
+								'like'=>"1",
+								];
+						$gagModel->addLikeOrDislikeGag($data);
+						$result=['success'=>"true",
+								"id"=>1];
+				 	 }
+		}
+		echo Zend_Json::encode($result);
+		exit;
+		break;
 }
