@@ -6,6 +6,7 @@ class Gag extends Dot_Model
 	{
 		parent::__construct();
 	}
+	//get a list of gags
 	public function getGagList($page=1)
 	{
 		$select = $this->db->select()
@@ -13,23 +14,28 @@ class Gag extends Dot_Model
  		$dotPaginator = new Dot_Paginator($select, $page, $this->settings->resultsPerPage);
 		return $dotPaginator->getData();
 	}
-	// i have modified method name form getGag to getGagById
+	// get details and likes for one post
 	public function getGagById($id)
 	{	
 		$select = $this->db->select()
 						   ->from('post')
 						   ->where('id= ?',$id);
- 		// $dotPaginator = new Dot_Paginator($select, $page, $this->settings->resultsPerPage);
-		$result=$this->db->fetchAll($select);
+
+		$likes= $this->getLikeByPost($id);
+		$result=$this->db->fetchRow($select);
+		$result['likes']=0;
+		foreach ($likes as $like) {
+		$result["likes"]+=$like['like'];
+		}
 		return $result;
 
 	}
+	//get comment by id
 	public function getCommentById($id)
 	{	
 		$select = $this->db->select()
 						   ->from('comment')
 						   ->where('id= ?',$id);
- 		// $dotPaginator = new Dot_Paginator($select, $page, $this->settings->resultsPerPage);
 		$result=$this->db->fetchAll($select);
 		return $result;
 
@@ -44,6 +50,7 @@ class Gag extends Dot_Model
 		$result=$this->db->fetchAll($select);
 		return $result;
 	}
+	//gets all comments parents of an post
 	public function getCommentsParents($gagId)
 	{
 		$select=$this->db->select()
@@ -96,15 +103,17 @@ class Gag extends Dot_Model
 
 		$this->db->insert('comment',$data);
 	}
+	//update gag
 	public function updateGag($data , $id)
 	{
 		$this->db->update('post', $data, 'id = '.$id);
 	}
+	// delete gag
 	public function deleteGag($id)
 	{
 		$this->db->delete('post', 'id = ' . $id);
 	}
-
+	//delet comment
 	public function deleteComment($id)
 	{
 		$this->db->delete('comment', 'id = ' . $id);
@@ -125,14 +134,23 @@ class Gag extends Dot_Model
     {
     	$this->db->update('postLike', $a, 'id = ' . $likeId);
     }
-    // get like 
+    // get like on id post and id user
     public function getLike ($postId, $userId)
     {
     	$select = $this->db->select()
 						   ->from('postLike')
 						   ->where('id_post= ?', $postId)
 						   ->where('id_user= ?', $userId);
+		$result=$this->db->fetchRow($select);
+		return $result;
+    }
+    // get like on id post
+    public function getLikeByPost ($postId)
+    {
+    	$select = $this->db->select()
+						   ->from('postLike')
+						   ->where('id_post= ?', $postId);
 		$result=$this->db->fetchAll($select);
-		return $result[0];
+		return $result;
     }
 }

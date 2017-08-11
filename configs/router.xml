@@ -6,6 +6,7 @@
 		<frontend>Page</frontend>
 		<frontend>User</frontend>
 		<frontend>Article</frontend>
+		<frontend>Gag</frontend>
 		<admin>Admin</admin>
 		<admin>System</admin>
 		<admin>User</admin>

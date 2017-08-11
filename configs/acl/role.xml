@@ -10,6 +10,7 @@
 		<frontend>
 			<allow>
 				<guest>
+					<Gag>all</Gag>
 					<Article>all</Article>
 					<Page>all</Page><!-- allow 'guest' to access 'Page' controller -->
 					<User>all</User><!-- allow 'guest' to access 'User' controller -->
