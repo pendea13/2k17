@@ -20,12 +20,15 @@ var siteUrl='{SITE_URL}';
   {
     var likes="{GAG_LIKES}";
     $.ajax({
-        url: siteUrl + "/admin/gag/like",
+        url: siteUrl + "/gag/like",
         type: "POST",
         dataType: "Json",
         data : {id: id,likes: likes},
         success:function(response){
           var id = response['id'];
+          if (response==false){
+          window.location='{SITE_URL}/user/login/';
+          }else {
           if (id == 1) {
             $("#like").text('unlike');
             $("#likes").text('[ '+response['likes']+' ]');
@@ -38,19 +41,23 @@ var siteUrl='{SITE_URL}';
               $("#likes").text('[ '+response['likes']+' ]');
           }
         }
-        });
+      }
+    });
   }
 function dislike(id)
 {
   var likes="{GAG_LIKES}";
 
     $.ajax({
-        url: siteUrl + "/admin/gag/dislike",
+        url: siteUrl + "/gag/dislike",
         type: "POST",
         dataType: "Json",
         data : {id: id,likes: likes},
         success:function(response){
             var id = response['id'];
+            if (response==false){
+          window.location='{SITE_URL}/user/login/';
+          }else {
             if (id == -1) {
                 $("#dislike").text('like');
                 $("#likes").text('[ '+response['likes']+' ]');
@@ -62,6 +69,7 @@ function dislike(id)
                 $("#like").text('like');
                 $("#likes").text('[ '+response['likes']+' ]');
             }
+          }
         }
     });
 }
@@ -84,15 +92,13 @@ function dislike(id)
                 <button onclick='like({GAG_ID});' id="like">Like</button>
                 <button onclick='dislike({GAG_ID});' id="dislike">Dislike</button>
                   <hr>
-                    <div class="box_header">
-                        Comments :
-                    </div>
                   <form method="post" action="">
                     <input type="hidden" name="parent_id" value="0">
                     <label for="comment">Comment:</label>
                     <textarea name="comment"></textarea>
                     <button type="submit" class="btn btn-primary">Submit</button>
                   </form>
+                  <hr>
                 </div>
               </td>
             </tr>
@@ -106,8 +112,10 @@ function dislike(id)
                 
               <td>
                   <p class="content" no={COMMENT_ID}>{COMMENT_CONTENT}</p>
+                  <!-- BEGIN comment_list_buttones -->
                 <button id="{COMMENT_ID}" class="edit rightalign">Edit</button>
-                <button onclick="window.location='{SITE_URL}/admin/gag/delete-comment/id/{COMMENT_ID}';" title="Delete" class="delete_state rightalign">Delete</button>
+                <button onclick="window.location='{SITE_URL}/gag/delete-comment/id/{COMMENT_ID}';" title="Delete" class="delete_state rightalign">Delete</button>
+                <!-- END comment_list_buttones -->
                 <button id="{COMMENT_ID}" class="reply btn btn-primary">Reply</button>
                   <p>Replys :</p>
                   <hr>
@@ -123,9 +131,10 @@ function dislike(id)
     <tr>
       <td>
       <p class="content" no={REPLY_ID}>{REPLY_CONTENT}</p>
-        
+        <!-- BEGIN comment_reply_buttones -->
         <button id="{REPLY_ID}" class="edit brightalign">Edit</button>
-        <button onclick="window.location='{SITE_URL}/admin/gag/delete-comment/id/{REPLY_ID}';" title="Delete" class="delete_state rightalign">Delete</button>
+        <button onclick="window.location='{SITE_URL}/gag/delete-comment/id/{REPLY_ID}';" title="Delete" class="delete_state rightalign">Delete</button>
+        <!-- END comment_reply_buttones -->
         <hr>
       </td>
     </tr>

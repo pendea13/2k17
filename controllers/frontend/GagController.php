@@ -10,9 +10,9 @@ switch ($registry->requestAction)
 {
 	default:
 	case 'list':
-		$page = (isset($registry->request['page']) && $registry->request['page'] > 0) ? $registry->request['page'] : 1;
- 		$list= $gagModel->getGagList($page);
- 		$gagView->showGagList('gag_list', $list, $page);
+ 		$list= $gagModel->getGagList();
+ 		// Zend_Debug::dump($list); exit();
+ 		$gagView->showGagList('gag_list', $list);
 		break;
 	case 'edit':
 		$gag= $gagModel->getGagById($registry->request["id"]);
@@ -103,6 +103,7 @@ switch ($registry->requestAction)
 		$gagView->showGagById('delete_gag', $data);
 		break;
 	case 'delete-comment':
+	//delete comment and hes replays and redirect to gag
 		if($_SERVER['REQUEST_METHOD'] === "POST")
 		{
 			
@@ -111,29 +112,36 @@ switch ($registry->requestAction)
 			{
 				// delete gag
 				$gagModel->deleteComment($registry->request['id']);
-				$registry->session->message['txt'] = $option->infoMessage->gagDelete;
-				$registry->session->message['type'] = 'info';
+				// $registry->session->message['txt'] = $option->infoMessage->gagDelete;
+				// $registry->session->message['type'] = 'info';
 			}
 			else
 			{
-				$registry->session->message['txt'] = $option->errorMessage->gagDeleteFail;
-				$registry->session->message['type'] = 'error';
+				// $registry->session->message['txt'] = $option->errorMessage->gagDeleteFail;
+				// $registry->session->message['type'] = 'error';
 			}
-			header('Location: '.$registry->configuration->website->params->url. '/' . $registry->requestModule . '/' . $registry->requestController. '/list/');
+			header('Location: '.$_SESSION['saveUrl']);
+			unset($_SESSION['saveUrl']);
 			exit;
 		}
 		if (!$registry->request['id'])
 		{
-			header('Location: '.$registry->configuration->website->params->url. '/' . $registry->requestModule . '/' . $registry->requestController. '/list/');
+			header('Location: '.$_SESSION['saveUrl']);
+			unset($_SESSION['saveUrl']);
 			exit;
 		}
+		$_SESSION['saveUrl']=$_SERVER["HTTP_REFERER"];
+		// Zend_Debug::dump($_SESSION['saveUrl']); exit();
 		$data = $gagModel->getCommentById($registry->request['id']);
 		// delete page confirmation
 		$gagView->showComment('delete_comment', $data);
 		break;
 	case 'like':
+	// add or update the like and check if user is loged in else redirect him to login 
+	if (!empty($session->user->id)){
 		if (isset($_POST['id'])||!empty($_POST['id']))
-		{
+		{ 
+
 				$like=$gagModel->getLike($_POST['id'],$session->user->id);
 				
 				if (!empty($like)) 
@@ -146,6 +154,7 @@ switch ($registry->requestAction)
                             $singelGagData=$gagModel->getGagById($_POST['id']);
                             $result=['success'=>"true",
                             	"likes"=>$singelGagData['likes'],
+                            	'postId'=>$_POST['id'],
                                 "id"=>0];
                         } elseif($like['like']=='-1') {
                             $editLike=['like'=>'0'];
@@ -154,6 +163,7 @@ switch ($registry->requestAction)
                             $singelGagData=$gagModel->getGagById($_POST['id']);
                             $result=['success'=>"true",
                             "likes"=>$singelGagData['likes'],
+                            'postId'=>$_POST['id'],
                                 "id"=>-1];
                         } else {
                             $editLike=['like'=>'1'];
@@ -162,6 +172,7 @@ switch ($registry->requestAction)
                             $singelGagData=$gagModel->getGagById($_POST['id']);
                             $result=['success'=>"true",
                             "likes"=>$singelGagData['likes'],
+                            'postId'=>$_POST['id'],
                                 "id"=>1];
                         }
 				}
@@ -176,60 +187,77 @@ switch ($registry->requestAction)
 						$singelGagData=$gagModel->getGagById($_POST['id']);
 						$result=['success'=>"true",
 						"likes"=>$singelGagData['likes'],
+						'postId'=>$_POST['id'],
 								"id"=>1];
 				 	 }
+			echo Zend_Json::encode($result);
+			exit;
+			}
+	} else {
+			$_SESSION['saveUrl']=$_SERVER["HTTP_REFERER"];
+			echo Zend_Json::encode(false);
+			exit;
 		}
-		echo Zend_Json::encode($result);
-		exit;
 		break;
     case 'dislike':
-        if (isset($_POST['id'])||!empty($_POST['id']))
-        {
-            $like=$gagModel->getLike($_POST['id'],$session->user->id);
-            if (isset($like))
-            {
-                if($like['like']=='-1')
-                {
-                    $editLike=['like'=>'0'];
+    // add or update the dislike and check if user is loged in else redirect him to login 
+    	if (!empty($session->user->id)){
+	        if (isset($_POST['id'])||!empty($_POST['id']))
+	        {
+	            $like=$gagModel->getLike($_POST['id'],$session->user->id);
+	            if (isset($like))
+	            {
+	                if($like['like']=='-1')
+	                {
+	                    $editLike=['like'=>'0'];
 
-                    $gagModel->editLike($editLike,$like['id']);
-                    $singelGagData=$gagModel->getGagById($_POST['id']);
-                    $result=['success'=>"true",
-                    "likes"=>$singelGagData['likes'],
-                        "id"=>0];
-                } elseif($like['like']=='0') {
-                    $editLike=['like'=>'-1'];
+	                    $gagModel->editLike($editLike,$like['id']);
+	                    $singelGagData=$gagModel->getGagById($_POST['id']);
+	                    $result=['success'=>"true",
+	                    "likes"=>$singelGagData['likes'],
+	                    'postId'=>$_POST['id'],
+	                        "id"=>0];
+	                } elseif($like['like']=='0') {
+	                    $editLike=['like'=>'-1'];
 
-                    $gagModel->editLike($editLike,$like['id']);
-                    $singelGagData=$gagModel->getGagById($_POST['id']);
-                    $result=['success'=>"true",
-                    "likes"=>$singelGagData['likes'],
-                        "id"=>-1];
-                } else {
-                    $editLike=['like'=>'0'];
+	                    $gagModel->editLike($editLike,$like['id']);
+	                    $singelGagData=$gagModel->getGagById($_POST['id']);
+	                    $result=['success'=>"true",
+	                    "likes"=>$singelGagData['likes'],
+	                    'postId'=>$_POST['id'],
+	                        "id"=>-1];
+	                } else {
+	                    $editLike=['like'=>'0'];
 
-                    $gagModel->editLike($editLike,$like['id']);
-                    $singelGagData=$gagModel->getGagById($_POST['id']);
-                    $result=['success'=>"true",
-                    "likes"=>$singelGagData['likes'],
-                        "id"=>1];
-                }
-            }
-            else
-            {
+	                    $gagModel->editLike($editLike,$like['id']);
+	                    $singelGagData=$gagModel->getGagById($_POST['id']);
+	                    $result=['success'=>"true",
+	                    "likes"=>$singelGagData['likes'],
+	                    'postId'=>$_POST['id'],
+	                        "id"=>1];
+	                }
+	            }
+	            else
+	            {
 
-                $data=['id_post'=>$_POST['id'],
-                    'id_user'=>$session->user->id,
-                    'like'=>"-1",
-                ];
-                $gagModel->addLikeOrDislikeGag($data);
-                $singelGagData=$gagModel->getGagById($_POST['id']);
-                $result=['success'=>"true",
-                "likes"=>$singelGagData['likes'],
-                    "id"=>-1];
-            }
-        }
-        echo Zend_Json::encode($result);
-        exit;
+	                $data=['id_post'=>$_POST['id'],
+	                    'id_user'=>$session->user->id,
+	                    'like'=>"-1",
+	                ];
+	                $gagModel->addLikeOrDislikeGag($data);
+	                $singelGagData=$gagModel->getGagById($_POST['id']);
+	                $result=['success'=>"true",
+	                "likes"=>$singelGagData['likes'],
+	                'postId'=>$_POST['id'],
+	                    "id"=>-1];
+	            }
+	        echo Zend_Json::encode($result);
+	        exit;
+	        }
+        } else {
+        	$_SESSION['saveUrl']=$_SERVER["HTTP_REFERER"];
+			echo Zend_Json::encode(false);
+			exit;
+		}
         break;
 }

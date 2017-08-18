@@ -4,7 +4,7 @@
 		<a href="{SITE_URL}" target="_self">Home</a> 
 	</li>
 	<li class="{SEL_PAGE_CODING-STANDARD}">
-		<a href="{SITE_URL}/article/list">Article List</a> 
+		<a href="{SITE_URL}/gag/list">Gag List</a> 
 	</li>
  
 	</li>

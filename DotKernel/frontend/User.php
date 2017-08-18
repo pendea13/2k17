@@ -131,7 +131,12 @@ class User extends Dot_Model_User
 								'country' => $userCountry[1]
 								);
 			$this->registerLogin($dataLogin);
+			if (isset($_SESSION['saveUrl'])){
+				$link=$_SESSION['saveUrl'];
+				unset($_SESSION['saveUrl']);
+			}else {
 			$link = isset($session->wantUrl) ? $session->wantUrl : $this->config->website->params->url.'/user/account';
+			}
 			header('location: '.$link);
 			exit;
 		}

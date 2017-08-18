@@ -7,12 +7,26 @@ class Gag extends Dot_Model
 		parent::__construct();
 	}
 	//get a list of gags
-	public function getGagList($page=1)
+	public function getGagList()
 	{
 		$select = $this->db->select()
 						   ->from('post');
- 		$dotPaginator = new Dot_Paginator($select, $page, $this->settings->resultsPerPage);
-		return $dotPaginator->getData();
+ 		$result=$this->db->fetchAll($select);
+ 		$comepletedData = [];
+		foreach ($result as $gag) {
+			$comepletedData[$gag['id']]['title'] = $gag['title'];
+			$comepletedData[$gag['id']]['id'] = $gag['id'];
+			$comepletedData[$gag['id']]['urlimage'] = $gag['urlimage'];
+			$comepletedData[$gag['id']]['likes']=0;
+			$likes= $this->getLikeByPost($gag['id']);
+				foreach ($likes as $like) {
+					$comepletedData[$gag['id']]['likes'] +=$like['like'];
+				}
+
+
+		}
+
+		return $comepletedData;
 	}
 	// get details and likes for one post
 	public function getGagById($id)
