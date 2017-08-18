@@ -41,15 +41,13 @@ class Gag_View extends View
 		$this->tpl->setFile('tpl_main', 'gag/' . $this->templateFile . '.tpl');
 	}
 	// showing gag by id
-	public function showGagById($templateFile='', $articleList)
+	public function showGagById($templateFile='', $article)
 	{ 
 		if ($templateFile != '') $this->templateFile = $templateFile;
 		$this->tpl->setFile('tpl_main', 'gag/' . $this->templateFile . '.tpl');
-		foreach ($articleList as $article) {
 			foreach ($article as $articleKey => $articleValue) {
 			$this->tpl->setVar(strtoupper("GAG_".$articleKey),$articleValue);
 			}
-		}
 	}
 	public function showComment ($templateFile='', $comment){
 		if ($templateFile != '') $this->templateFile = $templateFile;

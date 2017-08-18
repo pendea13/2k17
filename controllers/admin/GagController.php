@@ -130,18 +130,36 @@ switch ($registry->requestAction)
 		if (isset($_POST['id'])||!empty($_POST['id']))
 		{
 				$like=$gagModel->getLike($_POST['id'],1);
-				// var_dump($like);
-				// exit();
-				if (isset($like)) 
+				
+				if (!empty($like)) 
 				{
 						if($like['like']=='1')
 						{
 							$editLike=['like'=>'0'];
-						}
-						$gagModel->editLike($editLike,$like['id']);
-						$result=['success'=>"true",
-								"id"=>1];
-				} 
+
+                            $gagModel->editLike($editLike,$like['id']);
+                            $singelGagData=$gagModel->getGagById($_POST['id']);
+                            $result=['success'=>"true",
+                            	"likes"=>$singelGagData['likes'],
+                                "id"=>0];
+                        } elseif($like['like']=='-1') {
+                            $editLike=['like'=>'0'];
+
+                            $gagModel->editLike($editLike,$like['id']);
+                            $singelGagData=$gagModel->getGagById($_POST['id']);
+                            $result=['success'=>"true",
+                            "likes"=>$singelGagData['likes'],
+                                "id"=>-1];
+                        } else {
+                            $editLike=['like'=>'1'];
+
+                            $gagModel->editLike($editLike,$like['id']);
+                            $singelGagData=$gagModel->getGagById($_POST['id']);
+                            $result=['success'=>"true",
+                            "likes"=>$singelGagData['likes'],
+                                "id"=>1];
+                        }
+				}
 				else 
 				{
 
@@ -150,11 +168,63 @@ switch ($registry->requestAction)
 								'like'=>"1",
 								];
 						$gagModel->addLikeOrDislikeGag($data);
+						$singelGagData=$gagModel->getGagById($_POST['id']);
 						$result=['success'=>"true",
+						"likes"=>$singelGagData['likes'],
 								"id"=>1];
 				 	 }
 		}
 		echo Zend_Json::encode($result);
 		exit;
 		break;
+    case 'dislike':
+        if (isset($_POST['id'])||!empty($_POST['id']))
+        {
+            $like=$gagModel->getLike($_POST['id'],1);
+            if (isset($like))
+            {
+                if($like['like']=='-1')
+                {
+                    $editLike=['like'=>'0'];
+
+                    $gagModel->editLike($editLike,$like['id']);
+                    $singelGagData=$gagModel->getGagById($_POST['id']);
+                    $result=['success'=>"true",
+                    "likes"=>$singelGagData['likes'],
+                        "id"=>0];
+                } elseif($like['like']=='0') {
+                    $editLike=['like'=>'-1'];
+
+                    $gagModel->editLike($editLike,$like['id']);
+                    $singelGagData=$gagModel->getGagById($_POST['id']);
+                    $result=['success'=>"true",
+                    "likes"=>$singelGagData['likes'],
+                        "id"=>-1];
+                } else {
+                    $editLike=['like'=>'0'];
+
+                    $gagModel->editLike($editLike,$like['id']);
+                    $singelGagData=$gagModel->getGagById($_POST['id']);
+                    $result=['success'=>"true",
+                    "likes"=>$singelGagData['likes'],
+                        "id"=>1];
+                }
+            }
+            else
+            {
+
+                $data=['id_post'=>$_POST['id'],
+                    'id_user'=>1,
+                    'like'=>"-1",
+                ];
+                $gagModel->addLikeOrDislikeGag($data);
+                $singelGagData=$gagModel->getGagById($_POST['id']);
+                $result=['success'=>"true",
+                "likes"=>$singelGagData['likes'],
+                    "id"=>-1];
+            }
+        }
+        echo Zend_Json::encode($result);
+        exit;
+        break;
 }

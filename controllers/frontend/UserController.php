@@ -144,9 +144,20 @@ switch ($registry->requestAction)
 		// display signup form and allow user to register
 		$data = array();
 		$error = array();
+		$countError=[];
 		if ($_SERVER['REQUEST_METHOD'] === "POST")
 		{
 			// POST values that will be validated
+			//img validate
+			if ( file_exists($_FILES['profilePicture']['tmp_name'])){
+
+				foreach ($_FILES['profilePicture'] as $type => $detailsImage) {
+					$validateFile =	validateImage($type, $detailsImage);
+					if ($validateFile!==true){
+						$countError[$type]=$validateFile;
+					}
+				}
+			}
 			$values = array('details' => 
 								array('firstName'=>(isset($_POST['firstName']) ? $_POST['firstName'] : ''),
 									  'lastName'=>(isset($_POST['lastName'])? $_POST['lastName'] : ''),
@@ -160,10 +171,21 @@ switch ($registry->requestAction)
 							// 				   'recaptcha_response_field' => (isset($_POST['recaptcha_response_field']) ? $_POST['recaptcha_response_field'] : ''))
 						  );
 			$dotValidateUser = new Dot_Validate_User(array('who' => 'user', 'action' => 'add', 'values' => $values));
-			if($dotValidateUser->isValid())
+			if($dotValidateUser->isValid() && empty($countError))
 			{
 				// no error - then add user
 				$data = $dotValidateUser->getData();
+				//check if there is an img else ste default img
+				if ($_FILES['profilePicture']['name']!==""){
+
+					$file_name='images/user/'.$_POST['email'].".".basename($_FILES['profilePicture']['type']);
+					move_uploaded_file($_FILES['profilePicture']['tmp_name'], $file_name);
+
+					$data['urlImage']=$registry->configuration->website->params->url."/".$file_name;
+				} else {
+					$data['urlImage']=$registry->configuration->website->params->url.'/images/user/default.jpg';
+
+				}
 				$userModel->addUser($data);
 				$session->message['txt'] = $option->infoMessage->add;
 				$session->message['type'] = 'info';
@@ -177,13 +199,14 @@ switch ($registry->requestAction)
 					// do not display password in the add form
 					$data = $dotValidateUser->getData();
 					unset($data['password']);
+
 				}
+				header('Location: '.$registry->configuration->website->params->url. '/' . $registry->requestController. '/register');
+				exit;
 			}
-			// add action and validation are made with ajax, so return json string
-			header('Content-type: application/json');  
-			echo Zend_Json::encode(array('data'=>$dotValidateUser->getData(), 'error'=>$dotValidateUser->getError()));
-			// return $data and $error as json
-			exit;
+				header('Location: '.$registry->configuration->website->params->url. '/' . $registry->requestController. '/account');
+				exit;
+		
 		}
 		$userView->details('add',$data);
 	break;
@@ -274,4 +297,29 @@ switch ($registry->requestAction)
 		header('location: '.$registry->configuration->website->params->url);
 		exit;
 	break;
+}
+function validateImage ($type , $data) {
+	$errors=[];
+	if($type=='size'){
+		$allowedSize=2057152;
+		if ($data > $allowedSize){
+			$errors['size']="Size to big";
+		}
+	}
+	if ($type=="type"){
+		$allowedType=["image/png"=>"image/png",
+					"image/img"=>"image/img",
+		];
+		if (!array_key_exists($data, $allowedType)){
+			$errors['type']="Your image type is not allowed";
+		}
+
+	}
+	// if ($type=="name"){
+
+	// }
+	if (count($errors)===0) {
+		return true;
+	}
+	return $errors;
 }
