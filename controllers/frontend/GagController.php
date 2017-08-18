@@ -142,7 +142,7 @@ switch ($registry->requestAction)
 		if (isset($_POST['id'])||!empty($_POST['id']))
 		{ 
 
-				$like=$gagModel->getLike($_POST['id'],$session->user->id);
+				$like=$gagModel->getLike($_POST['id'],$session->user->id,'post');
 				
 				if (!empty($like)) 
 				{
@@ -150,7 +150,7 @@ switch ($registry->requestAction)
 						{
 							$editLike=['like'=>'0'];
 
-                            $gagModel->editLike($editLike,$like['id']);
+                            $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
                             $singelGagData=$gagModel->getGagById($_POST['id']);
                             $result=['success'=>"true",
                             	"likes"=>$singelGagData['likes'],
@@ -159,7 +159,7 @@ switch ($registry->requestAction)
                         } elseif($like['like']=='-1') {
                             $editLike=['like'=>'0'];
 
-                            $gagModel->editLike($editLike,$like['id']);
+                            $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
                             $singelGagData=$gagModel->getGagById($_POST['id']);
                             $result=['success'=>"true",
                             "likes"=>$singelGagData['likes'],
@@ -168,7 +168,7 @@ switch ($registry->requestAction)
                         } else {
                             $editLike=['like'=>'1'];
 
-                            $gagModel->editLike($editLike,$like['id']);
+                            $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
                             $singelGagData=$gagModel->getGagById($_POST['id']);
                             $result=['success'=>"true",
                             "likes"=>$singelGagData['likes'],
@@ -181,6 +181,7 @@ switch ($registry->requestAction)
 
 						$data=['id_post'=>$_POST['id'],
 								'id_user'=>$session->user->id,
+								'type'=>'post',
 								'like'=>"1",
 								];
 						$gagModel->addLikeOrDislikeGag($data);
@@ -204,14 +205,14 @@ switch ($registry->requestAction)
     	if (!empty($session->user->id)){
 	        if (isset($_POST['id'])||!empty($_POST['id']))
 	        {
-	            $like=$gagModel->getLike($_POST['id'],$session->user->id);
+	            $like=$gagModel->getLike($_POST['id'],$session->user->id,'post');
 	            if (isset($like))
 	            {
 	                if($like['like']=='-1')
 	                {
 	                    $editLike=['like'=>'0'];
 
-	                    $gagModel->editLike($editLike,$like['id']);
+	                    $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
 	                    $singelGagData=$gagModel->getGagById($_POST['id']);
 	                    $result=['success'=>"true",
 	                    "likes"=>$singelGagData['likes'],
@@ -220,7 +221,7 @@ switch ($registry->requestAction)
 	                } elseif($like['like']=='0') {
 	                    $editLike=['like'=>'-1'];
 
-	                    $gagModel->editLike($editLike,$like['id']);
+	                    $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
 	                    $singelGagData=$gagModel->getGagById($_POST['id']);
 	                    $result=['success'=>"true",
 	                    "likes"=>$singelGagData['likes'],
@@ -229,7 +230,7 @@ switch ($registry->requestAction)
 	                } else {
 	                    $editLike=['like'=>'0'];
 
-	                    $gagModel->editLike($editLike,$like['id']);
+	                    $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
 	                    $singelGagData=$gagModel->getGagById($_POST['id']);
 	                    $result=['success'=>"true",
 	                    "likes"=>$singelGagData['likes'],
@@ -242,6 +243,7 @@ switch ($registry->requestAction)
 
 	                $data=['id_post'=>$_POST['id'],
 	                    'id_user'=>$session->user->id,
+	                    'type'=>'post',
 	                    'like'=>"-1",
 	                ];
 	                $gagModel->addLikeOrDislikeGag($data);

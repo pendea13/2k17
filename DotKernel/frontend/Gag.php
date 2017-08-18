@@ -144,18 +144,26 @@ class Gag extends Dot_Model
     	$this->db->insert('postLike',$data);
     }
     //edit like on gag
-    public function editLike($a,$likeId)
+    public function editLike($a,$idType,$idUser , $type)
     {
-    	$this->db->update('postLike', $a, 'id = ' . $likeId);
+    	$where = array(
+		    'id_post = ?' => $idType,
+		    'id_user = ?' => $idUser,
+		    'type = ?' => $type
+		);
+		$this->db->update('postLike', $a, $where);
     }
     // get like on id post and id user
-    public function getLike ($postId, $userId)
+    public function getLike ($postId, $userId, $type)
     {
     	$select = $this->db->select()
 						   ->from('postLike')
 						   ->where('id_post= ?', $postId)
-						   ->where('id_user= ?', $userId);
+						   ->where('id_user= ?', $userId)
+						   ->where('type= ?', $type);;
+
 		$result=$this->db->fetchRow($select);
+		// Zend_Debug::dump($result); exit();
 		return $result;
     }
     // get like on id post
