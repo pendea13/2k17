@@ -49,7 +49,6 @@ switch ($registry->requestAction)
 	case 'show':
 		$singelGagData=$gagModel->getGagOrComById($registry->request["id"]);
 		$commentsList=$gagModel->getCommentByArticleId($registry->request["id"]);
-
 		// adding comment and replay
 		if ($_SERVER['REQUEST_METHOD'] === "POST")
 		{
@@ -67,7 +66,7 @@ switch ($registry->requestAction)
 						];
 						$gagModel->addComment($data);
 						header('Location: '.$registry->configuration->website->params->url.'/gag/show/id/'.$registry->request["id"]);
-                    }                    
+                    }
         }
 
 	
@@ -132,7 +131,6 @@ switch ($registry->requestAction)
 			exit;
 		}
 		$_SESSION['saveUrl']=$_SERVER["HTTP_REFERER"];
-		// Zend_Debug::dump($_SESSION['saveUrl']); exit();
 		$data = $gagModel->getCommentById($registry->request['id']);
 		// delete page confirmation
 		$gagView->showComment('delete_comment', $data);

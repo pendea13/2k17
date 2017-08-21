@@ -32,14 +32,14 @@ var siteUrl='{SITE_URL}';
                 window.location='{SITE_URL}/user/login/';
             }else {
                 if (id == 1) {
-                    $("#like_"+postId+"_"+type).text('unlike');
+                    $("#like_"+postId+"_"+type).css('color','red');
                     $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
                 } else if(id == 0) {
-                    $("#like_"+postId+"_"+type).text('like');
+                    $("#like_"+postId+"_"+type).css('color','initial');
                     $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
                 } else {
-                    $("#dislike_"+postId+"_"+type).text('dislike');
-                    $("#like_"+postId+"_"+type).text('like');
+                    $("#dislike_"+postId+"_"+type).css('color','initial');
+                    $("#like_"+postId+"_"+type).css('color','initial');
                     $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
                 }
             }
@@ -62,14 +62,14 @@ function dislike(id , type)
                 window.location='{SITE_URL}/user/login/';
             }else {
                 if (id == -1) {
-                    $("#dislike_"+postId+"_"+type).text('like');
+                    $("#dislike_"+postId+"_"+type).css('color','red');
                     $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
                 } else if(id == 0) {
-                    $("#dislike_"+postId+"_"+type).text('dislike');
+                    $("#dislike_"+postId+"_"+type).css('color','initial');
                     $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
                 } else {
-                    $("#dislike_"+postId+"_"+type).text('dislike');
-                    $("#like_"+postId+"_"+type).text('like');
+                    $("#dislike_"+postId+"_"+type).css('color','initial');
+                    $("#like_"+postId+"_"+type).css('color','initial');
                     $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
                 }
             }
@@ -91,9 +91,9 @@ function dislike(id , type)
             <tr>
               <td class="rightalign">
                 </div>
-                <span id ="likes_{GAG_ID}_post" no ='{GAG_LIKES}'>[ {GAG_LIKES} ]</span>
-                <button onclick='like({GAG_ID} , "post");' id="like_{GAG_ID}_post">Like</button>
-                <button onclick='dislike({GAG_ID} ,"post");' id="dislike_{GAG_ID}_post">Dislike</button>
+                    <span id ="likes_{GAG_ID}_post" no ='{GAG_LIKES}'>[ {GAG_LIKES} ]</span>
+                    <button style="{USER_LIKED}" onclick='like({GAG_ID} , "post");' id="like_{GAG_ID}_post">⇧</button>
+                    <button style="{USER_DISLIKE}" onclick='dislike({GAG_ID} ,"post");' id="dislike_{GAG_ID}_post">⇩</button>
                   <hr>
                   <form method="post" action="">
                     <input type="hidden" name="parent_id" value="0">
@@ -109,8 +109,8 @@ function dislike(id , type)
             <tr>
     
                 <td> <span id ="likes_{COMMENT_ID}_com" no ='{COMMENT_LIKES}'>[ {COMMENT_LIKES} ]</span>
-                  <button onclick='like({COMMENT_ID} , "com");' id="like_{COMMENT_ID}_com">Like</button>
-                  <button onclick='dislike({COMMENT_ID} ,"com");' id="dislike_{COMMENT_ID}_com">Dislike</button>
+                  <button style="{COMMENT_LIKED}" onclick='like({COMMENT_ID} , "com");' id="like_{COMMENT_ID}_com">⇧</button>
+                  <button style="{COMMENT_DISLIKE}" onclick='dislike({COMMENT_ID} ,"com");' id="dislike_{COMMENT_ID}_com">⇩</button>
                   <h3> Posted on {COMMENT_DATE} by {COMMENT_USERNAME}</h3></td>
 
             </tr>
@@ -132,8 +132,8 @@ function dislike(id , type)
     <tr>
       <td>
        ↪<span id ="likes_{REPLY_ID}_com" no ='{REPLY_LIKES}'>[ {REPLY_LIKES} ]</span>
-          <button onclick='like({REPLY_ID} , "com");' id="like_{REPLY_ID}_com">Like</button>
-          <button onclick='dislike({REPLY_ID} ,"com");' id="dislike_{REPLY_ID}_com">Dislike</button>️
+          <button style="{REPLY_LIKED}" onclick='like({REPLY_ID} , "com");' id="like_{REPLY_ID}_com">⇧</button>
+          <button style="{REPLY_DISLIKE}" onclick='dislike({REPLY_ID} ,"com");' id="dislike_{REPLY_ID}_com">⇩</button>️
           Reply posted on {REPLY_DATE} by {REPLY_USERNAME}
       </td>
     </tr>

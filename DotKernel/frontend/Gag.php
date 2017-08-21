@@ -18,13 +18,16 @@ class Gag extends Dot_Model
 			$comepletedData[$gag['id']]['id'] = $gag['id'];
 			$comepletedData[$gag['id']]['urlimage'] = $gag['urlimage'];
 			$comepletedData[$gag['id']]['likes']=0;
+            $comepletedData[$gag['id']]['arrayLikes']=[];
 			$likes= $this->getLikeByPost($gag['id'], "post");
-				foreach ($likes as $like) {
+				foreach ($likes as $key=> $like) {
 					$comepletedData[$gag['id']]['likes'] +=$like['like'];
-				}
+                    foreach ($like as $key1=>$value){
+                        $comepletedData[$gag["id"]]['arrayLikes'][$key][$key1]=$value;
 
-
-		}
+                    }
+                }
+        }
 
 		return $comepletedData;
 	}
@@ -42,8 +45,11 @@ class Gag extends Dot_Model
         $likes= $this->getLikeByPost($id, $type);
         $result=$this->db->fetchRow($select);
         $result['likes']=0;
-        foreach ($likes as $like) {
+        foreach ($likes as $key => $like) {
             $result["likes"]+=$like['like'];
+            foreach ($like as $key1=>$value){
+                $result["arrayLikes"][$key][$key1]=$value;
+            }
         }
         return $result;
 
@@ -96,12 +102,14 @@ class Gag extends Dot_Model
             $likes=$this->getLikeByPost($value['id'], "com");
             foreach ($likes as $like) {
                 $comepletedData[$value['id']]['likes']+=$like['like'];
+                foreach ($like as $keyLike=>$valueLike){
+                    $comepletedData[$value['id']]["arrayLikes"][$key][$keyLike]=$valueLike;
+                }
             }
 
 			if(isset($replies) && !empty($replies))
 			{
 				$comepletedData[$value['id']]['replies'] = $replies;
-//                Zend_Debug::dump($comepletedData);exit;
             }
         }
 		return $comepletedData;
@@ -117,8 +125,11 @@ class Gag extends Dot_Model
 	    foreach ($result as $key => $reply){
             $result[$key]['likes']=0;
             $likes=$this->getLikeByPost($reply['id'], "com");
-            foreach ($likes as $like) {
+            foreach ($likes as $likeKey => $like) {
                 $result[$key]['likes']+=$like['like'];
+                foreach ($like as $keyValue=>$value){
+                    $result[$key]["arrayLikes"][$likeKey][$keyValue]=$value;
+                }
             }
     }
 

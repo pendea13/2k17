@@ -17,14 +17,14 @@
                     window.location='{SITE_URL}/user/login/';
                 }else {
                     if (id == 1) {
-                        $("#like_"+postId+"_"+type).text('unlike');
+                        $("#like_"+postId+"_"+type).css('color','red');
                         $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
                     } else if(id == 0) {
-                        $("#like_"+postId+"_"+type).text('like');
+                        $("#like_"+postId+"_"+type).css('color','initial');
                         $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
                     } else {
-                        $("#dislike_"+postId+"_"+type).text('dislike');
-                        $("#like_"+postId+"_"+type).text('like');
+                        $("#dislike_"+postId+"_"+type).css('color','initial');
+                        $("#like_"+postId+"_"+type).css('color','initial');
                         $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
                     }
                 }
@@ -47,14 +47,14 @@
                     window.location='{SITE_URL}/user/login/';
                 }else {
                     if (id == -1) {
-                        $("#dislike_"+postId+"_"+type).text('like');
+                        $("#dislike_"+postId+"_"+type).css('color','red');
                         $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
                     } else if(id == 0) {
-                        $("#dislike_"+postId+"_"+type).text('dislike');
+                        $("#dislike_"+postId+"_"+type).css('color','initial');
                         $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
                     } else {
-                        $("#dislike_"+postId+"_"+type).text('dislike');
-                        $("#like_"+postId+"_"+type).text('like');
+                        $("#dislike_"+postId+"_"+type).css('color','initial');
+                        $("#like_"+postId+"_"+type).css('color','initial');
                         $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
                     }
                 }
@@ -79,8 +79,8 @@
               <td class="rightalign">
                 </div>
                   <span id ="likes_{GAG_ID}_post" no ='{GAG_LIKES}'>[ {GAG_LIKES} ]</span>
-                  <button onclick='like({GAG_ID} , "post");' id="like_{GAG_ID}_post">Like</button>
-                  <button onclick='dislike({GAG_ID} ,"post");' id="dislike_{GAG_ID}_post">Dislike</button>
+                  <button style="{USER_LIKED}" onclick='like({GAG_ID} , "post");' id="like_{GAG_ID}_post">⇧</button>
+                  <button style="{USER_DISLIKE}" onclick='dislike({GAG_ID} ,"post");' id="dislike_{GAG_ID}_post">⇩</button>
                   <hr>
                   </table>
         </div>
