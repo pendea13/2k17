@@ -16,60 +16,63 @@ $(document).ready(function(){
 
 });
 var siteUrl='{SITE_URL}';
-  function like(id)
+  function like(id, type)
   {
-    var likes="{GAG_LIKES}";
+      var likes=$('span#likes_'+id+"_"+type).attr("no");
     $.ajax({
         url: siteUrl + "/gag/like",
         type: "POST",
         dataType: "Json",
-        data : {id: id,likes: likes},
+        data : {id: id,type: type},
         success:function(response){
-          var id = response['id'];
-          if (response==false){
-          window.location='{SITE_URL}/user/login/';
-          }else {
-          if (id == 1) {
-            $("#like").text('unlike');
-            $("#likes").text('[ '+response['likes']+' ]');
-          } else if(id == 0) {
-            $("#like").text('like');
-            $("#likes").text('[ '+response['likes']+' ]');
-          } else {
-              $("#dislike").text('dislike');
-              $("#like").text('like');
-              $("#likes").text('[ '+response['likes']+' ]');
-          }
+            var id = response['id'];
+            var postId = response['postId'];
+            var likes =response['likes'];
+            if (response==false){
+                window.location='{SITE_URL}/user/login/';
+            }else {
+                if (id == 1) {
+                    $("#like_"+postId+"_"+type).text('unlike');
+                    $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
+                } else if(id == 0) {
+                    $("#like_"+postId+"_"+type).text('like');
+                    $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
+                } else {
+                    $("#dislike_"+postId+"_"+type).text('dislike');
+                    $("#like_"+postId+"_"+type).text('like');
+                    $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
+                }
+            }
         }
-      }
     });
   }
-function dislike(id)
+function dislike(id , type)
 {
-  var likes="{GAG_LIKES}";
-
+    var likes=$('span#likes_'+id+"_"+ type).attr("no");
     $.ajax({
         url: siteUrl + "/gag/dislike",
         type: "POST",
         dataType: "Json",
-        data : {id: id,likes: likes},
+        data : {id: id,type: type},
         success:function(response){
             var id = response['id'];
+            var postId= response['postId'];
+            var likes =response['likes'];
             if (response==false){
-          window.location='{SITE_URL}/user/login/';
-          }else {
-            if (id == -1) {
-                $("#dislike").text('like');
-                $("#likes").text('[ '+response['likes']+' ]');
-            } else if(id == 0) {
-                $("#dislike").text('dislike');
-                $("#likes").text('[ '+response['likes']+' ]');
-            } else {
-                $("#dislike").text('dislike');
-                $("#like").text('like');
-                $("#likes").text('[ '+response['likes']+' ]');
+                window.location='{SITE_URL}/user/login/';
+            }else {
+                if (id == -1) {
+                    $("#dislike_"+postId+"_"+type).text('like');
+                    $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
+                } else if(id == 0) {
+                    $("#dislike_"+postId+"_"+type).text('dislike');
+                    $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
+                } else {
+                    $("#dislike_"+postId+"_"+type).text('dislike');
+                    $("#like_"+postId+"_"+type).text('like');
+                    $("span#likes_"+postId+"_"+type).text('[ '+likes+' ]');
+                }
             }
-          }
         }
     });
 }
@@ -88,9 +91,9 @@ function dislike(id)
             <tr>
               <td class="rightalign">
                 </div>
-                <span id ="likes">[ {GAG_LIKES} ]</span>
-                <button onclick='like({GAG_ID});' id="like">Like</button>
-                <button onclick='dislike({GAG_ID});' id="dislike">Dislike</button>
+                <span id ="likes_{GAG_ID}_post" no ='{GAG_LIKES}'>[ {GAG_LIKES} ]</span>
+                <button onclick='like({GAG_ID} , "post");' id="like_{GAG_ID}_post">Like</button>
+                <button onclick='dislike({GAG_ID} ,"post");' id="dislike_{GAG_ID}_post">Dislike</button>
                   <hr>
                   <form method="post" action="">
                     <input type="hidden" name="parent_id" value="0">
@@ -105,7 +108,10 @@ function dislike(id)
 <!-- BEGIN comment_list -->
             <tr>
     
-              <td><h3> Posted on {COMMENT_DATE} by {COMMENT_USERNAME}</h3></td>
+                <td> <span id ="likes_{COMMENT_ID}_com" no ='{COMMENT_LIKES}'>[ {COMMENT_LIKES} ]</span>
+                  <button onclick='like({COMMENT_ID} , "com");' id="like_{COMMENT_ID}_com">Like</button>
+                  <button onclick='dislike({COMMENT_ID} ,"com");' id="dislike_{COMMENT_ID}_com">Dislike</button>
+                  <h3> Posted on {COMMENT_DATE} by {COMMENT_USERNAME}</h3></td>
 
             </tr>
             <tr>
@@ -125,7 +131,10 @@ function dislike(id)
     <!-- BEGIN comment_reply -->
     <tr>
       <td>
-       ↪️Reply posted on {REPLY_DATE} by {REPLY_USERNAME}
+       ↪<span id ="likes_{REPLY_ID}_com" no ='{REPLY_LIKES}'>[ {REPLY_LIKES} ]</span>
+          <button onclick='like({REPLY_ID} , "com");' id="like_{REPLY_ID}_com">Like</button>
+          <button onclick='dislike({REPLY_ID} ,"com");' id="dislike_{REPLY_ID}_com">Dislike</button>️
+          Reply posted on {REPLY_DATE} by {REPLY_USERNAME}
       </td>
     </tr>
     <tr>

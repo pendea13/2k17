@@ -18,7 +18,7 @@ class Gag extends Dot_Model
 			$comepletedData[$gag['id']]['id'] = $gag['id'];
 			$comepletedData[$gag['id']]['urlimage'] = $gag['urlimage'];
 			$comepletedData[$gag['id']]['likes']=0;
-			$likes= $this->getLikeByPost($gag['id']);
+			$likes= $this->getLikeByPost($gag['id'], "post");
 				foreach ($likes as $like) {
 					$comepletedData[$gag['id']]['likes'] +=$like['like'];
 				}
@@ -29,23 +29,27 @@ class Gag extends Dot_Model
 		return $comepletedData;
 	}
 	// get details and likes for one post
-	public function getGagById($id)
-	{	
-		$select = $this->db->select()
-						   ->from('post')
-						   ->where('id= ?',$id);
+	public function getGagOrComById($id ,$type="post")
+    {
+        $tabel=$type;
+        if ($type==="com"){
+            $tabel="comment";
+        }
+        $select = $this->db->select()
+            ->from($tabel)
+            ->where('id= ?',$id);
 
-		$likes= $this->getLikeByPost($id);
-		$result=$this->db->fetchRow($select);
-		$result['likes']=0;
-		foreach ($likes as $like) {
-		$result["likes"]+=$like['like'];
-		}
-		return $result;
+        $likes= $this->getLikeByPost($id, $type);
+        $result=$this->db->fetchRow($select);
+        $result['likes']=0;
+        foreach ($likes as $like) {
+            $result["likes"]+=$like['like'];
+        }
+        return $result;
 
-	}
-	//get comment by id
-	public function getCommentById($id)
+    }
+    //get comment by id
+    public function getCommentById($id)
 	{	
 		$select = $this->db->select()
 						   ->from('comment')
@@ -88,11 +92,18 @@ class Gag extends Dot_Model
 			$comepletedData[$value['id']]['date'] = $value['date'];
 			$comepletedData[$value['id']]['parent_id'] = $value['parent_id'];
 			$comepletedData[$value['id']]['id'] = $value['id'];
+            $comepletedData[$value['id']]['likes']=0;
+            $likes=$this->getLikeByPost($value['id'], "com");
+            foreach ($likes as $like) {
+                $comepletedData[$value['id']]['likes']+=$like['like'];
+            }
+
 			if(isset($replies) && !empty($replies))
 			{
 				$comepletedData[$value['id']]['replies'] = $replies;
-			}
-		}
+//                Zend_Debug::dump($comepletedData);exit;
+            }
+        }
 		return $comepletedData;
 	}
 	//get coment reply by coment id
@@ -103,6 +114,14 @@ class Gag extends Dot_Model
 	                    ->where('parent_id = ?', $id)
 	                    ->join('user','user.id = comment.idUser','username');
 	    $result = $this->db->fetchAll($select);
+	    foreach ($result as $key => $reply){
+            $result[$key]['likes']=0;
+            $likes=$this->getLikeByPost($reply['id'], "com");
+            foreach ($likes as $like) {
+                $result[$key]['likes']+=$like['like'];
+            }
+    }
+
 	    return $result;
 	}
 	// add a new Gag with post method
@@ -163,15 +182,16 @@ class Gag extends Dot_Model
 						   ->where('type= ?', $type);;
 
 		$result=$this->db->fetchRow($select);
-		// Zend_Debug::dump($result); exit();
+
 		return $result;
     }
     // get like on id post
-    public function getLikeByPost ($postId)
+    public function getLikeByPost ($postId , $type)
     {
     	$select = $this->db->select()
 						   ->from('postLike')
-						   ->where('id_post= ?', $postId);
+						   ->where('id_post= ?', $postId)
+                            ->where('type = ?', $type);
 		$result=$this->db->fetchAll($select);
 		return $result;
     }

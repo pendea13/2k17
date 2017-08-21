@@ -65,10 +65,11 @@ class Gag_View extends View
 		$this->tpl->setBlock('comment_list','comment_reply','comment_reply_block');
 		$this->tpl->setBlock('comment_list','comment_list_buttones','comment_list_buttones_block');
 		$this->tpl->setBlock('comment_reply','comment_reply_buttones','comment_reply_buttones_block');
-		
+
 		foreach ($commentList as $comment) {
 			$this->tpl->setVar(strtoupper("COMMENT_USERNAME"),$comment['username']);
 			$this->tpl->setVar(strtoupper("COMMENT_ID"),$comment['id']);
+            $this->tpl->setVar(strtoupper("COMMENT_LIKES"),$comment['likes']);
 			$this->tpl->setVar(strtoupper("COMMENT_CONTENT"),$comment['content']);
 			$this->tpl->setVar(strtoupper("COMMENT_DATE"),$comment['date']);
 			if (isset($this->session->user->id)){
@@ -83,6 +84,7 @@ class Gag_View extends View
                 foreach($comment['replies'] as $replyKey => $reply) {
                     $this->tpl->setVar('REPLY_USERNAME',$reply['username']);
                     $this->tpl->setVar('REPLY_ID',$reply['id']);
+                    $this->tpl->setVar('REPLY_LIKES',$reply['likes']);
                     $this->tpl->setVar('REPLY_CONTENT',$reply['content']);
 					$this->tpl->setVar('REPLY_DATE',$reply['date']);
 

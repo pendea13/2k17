@@ -47,8 +47,9 @@ switch ($registry->requestAction)
 		$gagView->showAddGag('gag_add');
 		break;
 	case 'show':
-		$singelGagData=$gagModel->getGagById($registry->request["id"]);
+		$singelGagData=$gagModel->getGagOrComById($registry->request["id"]);
 		$commentsList=$gagModel->getCommentByArticleId($registry->request["id"]);
+
 		// adding comment and replay
 		if ($_SERVER['REQUEST_METHOD'] === "POST")
 		{
@@ -142,7 +143,7 @@ switch ($registry->requestAction)
 		if (isset($_POST['id'])||!empty($_POST['id']))
 		{ 
 
-				$like=$gagModel->getLike($_POST['id'],$session->user->id,'post');
+				$like=$gagModel->getLike($_POST['id'],$session->user->id,$_POST['type']);
 				
 				if (!empty($like)) 
 				{
@@ -151,7 +152,8 @@ switch ($registry->requestAction)
 							$editLike=['like'=>'0'];
 
                             $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
-                            $singelGagData=$gagModel->getGagById($_POST['id']);
+
+                            $singelGagData=$gagModel->getGagOrComById($_POST['id'], $_POST['type']);
                             $result=['success'=>"true",
                             	"likes"=>$singelGagData['likes'],
                             	'postId'=>$_POST['id'],
@@ -160,7 +162,7 @@ switch ($registry->requestAction)
                             $editLike=['like'=>'0'];
 
                             $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
-                            $singelGagData=$gagModel->getGagById($_POST['id']);
+                            $singelGagData=$gagModel->getGagOrComById($_POST['id'],$_POST['type']);
                             $result=['success'=>"true",
                             "likes"=>$singelGagData['likes'],
                             'postId'=>$_POST['id'],
@@ -169,7 +171,7 @@ switch ($registry->requestAction)
                             $editLike=['like'=>'1'];
 
                             $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
-                            $singelGagData=$gagModel->getGagById($_POST['id']);
+                            $singelGagData=$gagModel->getGagOrComById($_POST['id'],$_POST['type']);
                             $result=['success'=>"true",
                             "likes"=>$singelGagData['likes'],
                             'postId'=>$_POST['id'],
@@ -181,11 +183,11 @@ switch ($registry->requestAction)
 
 						$data=['id_post'=>$_POST['id'],
 								'id_user'=>$session->user->id,
-								'type'=>'post',
+								'type'=>$_POST['type'],
 								'like'=>"1",
 								];
 						$gagModel->addLikeOrDislikeGag($data);
-						$singelGagData=$gagModel->getGagById($_POST['id']);
+						$singelGagData=$gagModel->getGagOrComById($_POST['id'],$_POST['type']);
 						$result=['success'=>"true",
 						"likes"=>$singelGagData['likes'],
 						'postId'=>$_POST['id'],
@@ -205,7 +207,7 @@ switch ($registry->requestAction)
     	if (!empty($session->user->id)){
 	        if (isset($_POST['id'])||!empty($_POST['id']))
 	        {
-	            $like=$gagModel->getLike($_POST['id'],$session->user->id,'post');
+	            $like=$gagModel->getLike($_POST['id'],$session->user->id,$_POST['type']);
 	            if (isset($like))
 	            {
 	                if($like['like']=='-1')
@@ -213,7 +215,7 @@ switch ($registry->requestAction)
 	                    $editLike=['like'=>'0'];
 
 	                    $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
-	                    $singelGagData=$gagModel->getGagById($_POST['id']);
+	                    $singelGagData=$gagModel->getGagOrComById($_POST['id'],$_POST['type']);
 	                    $result=['success'=>"true",
 	                    "likes"=>$singelGagData['likes'],
 	                    'postId'=>$_POST['id'],
@@ -222,7 +224,7 @@ switch ($registry->requestAction)
 	                    $editLike=['like'=>'-1'];
 
 	                    $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
-	                    $singelGagData=$gagModel->getGagById($_POST['id']);
+	                    $singelGagData=$gagModel->getGagOrComById($_POST['id'],$_POST['type']);
 	                    $result=['success'=>"true",
 	                    "likes"=>$singelGagData['likes'],
 	                    'postId'=>$_POST['id'],
@@ -231,7 +233,7 @@ switch ($registry->requestAction)
 	                    $editLike=['like'=>'0'];
 
 	                    $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
-	                    $singelGagData=$gagModel->getGagById($_POST['id']);
+	                    $singelGagData=$gagModel->getGagOrComById($_POST['id'],$_POST['type']);
 	                    $result=['success'=>"true",
 	                    "likes"=>$singelGagData['likes'],
 	                    'postId'=>$_POST['id'],
@@ -243,11 +245,11 @@ switch ($registry->requestAction)
 
 	                $data=['id_post'=>$_POST['id'],
 	                    'id_user'=>$session->user->id,
-	                    'type'=>'post',
+	                    'type'=>$_POST['type'],
 	                    'like'=>"-1",
 	                ];
 	                $gagModel->addLikeOrDislikeGag($data);
-	                $singelGagData=$gagModel->getGagById($_POST['id']);
+	                $singelGagData=$gagModel->getGagOrComById($_POST['id'],$_POST['type']);
 	                $result=['success'=>"true",
 	                "likes"=>$singelGagData['likes'],
 	                'postId'=>$_POST['id'],
