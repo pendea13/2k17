@@ -49,29 +49,37 @@ switch ($registry->requestAction)
 	case 'show':
 		$singelGagData=$gagModel->getGagOrComById($registry->request["id"]);
 		$commentsList=$gagModel->getCommentByArticleId($registry->request["id"]);
-		// adding comment and replay
-		if ($_SERVER['REQUEST_METHOD'] === "POST")
-		{
-			 if (array_key_exists('id', $_POST)) {
-                        $comment = [
-                                'content' => $_POST['comment']
-                                ];
-                        $gagModel->editCommentById($comment, $_POST['id']);
-						header('Location: '.$registry->configuration->website->params->url.'/gag/show/id/'.$registry->request["id"]);
-                    } else {
-						$data=['idUser'=>$session->user->id,
-						'content'=>$_POST["comment"],
-						'idPost'=>$registry->request["id"],
-						'parent_id'=>$_POST['parent_id']
-						];
-						$gagModel->addComment($data);
-						header('Location: '.$registry->configuration->website->params->url.'/gag/show/id/'.$registry->request["id"]);
-                    }
-        }
-
-	
 		$gagView->showGagById('complet_gag',$singelGagData);
 		$gagView->showComments('complet_gag',$commentsList);
+		break;
+	case 'comment':
+		if (!empty($session->user->id)){
+			if (isset($_POST['id'])||!empty($_POST['id']))
+			{  
+				Zend_Debug::dump($_POST); exit();
+					 if (array_key_exists('id', $_POST)) {
+		                        $comment = [
+		                                'content' => $_POST['content']
+		                                ];
+		                        $gagModel->editCommentById($comment, $_POST['id']);
+								header('Location: '.$registry->configuration->website->params->url.'/gag/show/id/'.$registry->request["id"]);
+		                    } else {
+								$data=['idUser'=>$session->user->id,
+								'content'=>$_POST["comment"],
+								'idPost'=>$registry->request["id"],
+								'parent_id'=>$_POST['parent_id']
+								];
+								$gagModel->addComment($data);
+								header('Location: '.$registry->configuration->website->params->url.'/gag/show/id/'.$registry->request["id"]);
+		                    }
+		        echo Zend_Json::encode($result);
+					exit;
+				}
+		} else {
+				$_SESSION['saveUrl']=$_SERVER["HTTP_REFERER"];
+				echo Zend_Json::encode(false);
+				exit;
+			}
 		break;
 	case 'delete':
 		if($_SERVER['REQUEST_METHOD'] === "POST")
@@ -143,7 +151,7 @@ switch ($registry->requestAction)
 
 				$like=$gagModel->getLike($_POST['id'],$session->user->id,$_POST['type']);
 				
-				if (!empty($like)) 
+				if (!empty($like) && !empty($like)) 
 				{
 						if($like['like']=='1')
 						{
@@ -206,7 +214,7 @@ switch ($registry->requestAction)
 	        if (isset($_POST['id'])||!empty($_POST['id']))
 	        {
 	            $like=$gagModel->getLike($_POST['id'],$session->user->id,$_POST['type']);
-	            if (isset($like))
+	            if (isset($like) && !empty($like))
 	            {
 	                if($like['like']=='-1')
 	                {

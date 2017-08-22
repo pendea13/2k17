@@ -10,7 +10,9 @@ $(document).ready(function(){
 
  	$("button.reply").click(function () {
 		var replying = $(this).attr("id");
-        $(this).replaceWith('<form  method="post" action=""><input type="hidden" name="parent_id" value="'+replying+'"><label for="comment">Comment:</label><textarea name="comment"></textarea><button type="submit">Reply</button></form>');
+        $(this).css('display' ,'none');
+        $("#form_"+replying).css('display' ,'block');
+
     	});
   
 
@@ -76,6 +78,29 @@ function dislike(id , type)
         }
     });
 }
+function comment(id='0',gagId)
+{ var conntent=$('#conntent_'+id).val();
+  $.ajax({
+        url: siteUrl + "/gag/comment",
+        type: "POST",
+        dataType: "Json",
+        data : {id: id,conntent:conntent},
+        success:function(response){
+            var idComment = response['id'];
+            var idParent = response['id_parent'];
+            var postId= response['postId'];
+            var likes = response['likes'];
+            var commentDate = response['date'];
+            var commentUsername = response['username']; 
+            if (response==false){
+                window.location='{SITE_URL}/user/login/';
+            }else {
+                $("#form_"+id).append("divul");
+            }
+        }
+    });
+
+}
 </script>
         <div class="box-shadow">
           <div class="box_header">
@@ -98,7 +123,7 @@ function dislike(id , type)
                   <form method="post" action="">
                     <input type="hidden" name="parent_id" value="0">
                     <label for="comment">Comment:</label>
-                    <textarea name="comment"></textarea>
+                    <textarea rows="2" cols="70" name="comment"></textarea>
                     <button type="submit" class="btn btn-primary">Submit</button>
                   </form>
                   <hr>
@@ -111,7 +136,8 @@ function dislike(id , type)
                 <td> <span id ="likes_{COMMENT_ID}_com" no ='{COMMENT_LIKES}'>[ {COMMENT_LIKES} ]</span>
                   <button style="{COMMENT_LIKED}" onclick='like({COMMENT_ID} , "com");' id="like_{COMMENT_ID}_com">⇧</button>
                   <button style="{COMMENT_DISLIKE}" onclick='dislike({COMMENT_ID} ,"com");' id="dislike_{COMMENT_ID}_com">⇩</button>
-                  <h3> Posted on {COMMENT_DATE} by {COMMENT_USERNAME}</h3></td>
+                  <h3> Posted on {COMMENT_DATE} by {COMMENT_USERNAME}</h3>
+                  </td>
 
             </tr>
             <tr>
@@ -125,6 +151,11 @@ function dislike(id , type)
                 <button id="{COMMENT_ID}" class="reply btn btn-primary">Reply</button>
                   <p>Replys :</p>
                   <hr>
+                  <form id="form_{COMMENT_ID}" style="display: none;" >
+                  <textarea rows="2" cols="70" id="conntent_{COMMENT_ID}"></textarea>
+                  <button onclick='comment({COMMENT_ID}, {GAG_ID});'>Reply</button>
+                  <hr>
+                  </form>
               </td>
             </tr>
         
