@@ -81,24 +81,20 @@ switch ($registry->requestAction)
 		//Dot_Auth::checkIdentity();
 		$data = array();
 		$error = array();
+		$countError=[];
 		if($_SERVER['REQUEST_METHOD'] === "POST")
 		{
-			// changes were made to checkUserToken
-			// see: Dot_Auth::checkUserToken($userToken, $userType='admin')
-			// see: IndexController.php : $userToken
-			if( !Dot_Auth::checkUserToken($userToken, 'user') )
+			//adding option for updating picture
+			if (file_exists($_FILES['profilePicture']['tmp_name']))
 			{
-				// remove the identity
-				$dotAuth = Dot_Auth::getInstance();
-				$dotAuth->clearIdentity('user');
-				// warn the user
-				$session->message['txt'] = $option->warningMessage->tokenExpired; 
-				$session->message['type'] = 'warning';
-				// log in 
-				header('Location: '.$registry->configuration->website->params->url. '/' . $registry->requestController. '/login');
-				exit;
+				foreach ($_FILES['profilePicture'] as $type => $detailsImage) {
+					$validateFile =	validateImage($type, $detailsImage);
+					if ($validateFile!==true){
+						$countError[$type]=$validateFile;
+					}
+				}
 			}
-			// POST values that will be validated
+			
 			$values = array('details' => 
 							array(
 								'firstName'=>(isset($_POST['firstName']) ? $_POST['firstName'] : ''),
@@ -121,14 +117,26 @@ switch ($registry->requestAction)
 										'values' => $values,
 										'userId' => $registry->session->user->id
 									));
-			if($dotValidateUser->isValid())
-			{
+			if($dotValidateUser->isValid() && empty($countError))
+			{	
+				
 				// no error - then update user
 				$data = $dotValidateUser->getData();
+				if ($_FILES['profilePicture']['name']!=="")
+				{
+					$file_name='images/user/'.$_POST['email'].".".basename($_FILES['profilePicture']['type']);
+					move_uploaded_file($_FILES['profilePicture']['tmp_name'], $file_name);
+
+					$data['urlImage']=$registry->configuration->website->params->url."/".$file_name;
+				} else {
+					$data['urlImage']=$registry->configuration->website->params->url.'/images/user/default.jpg';
+				}
 				$data['id'] = $registry->session->user->id;
 				$userModel->updateUser($data);
 				$session->message['txt'] = $option->infoMessage->update;
 				$session->message['type'] = 'info';
+				header('Location: '.$registry->configuration->website->params->url.'/user/account');
+				exit;
 			}
 			else
 			{
@@ -145,10 +153,12 @@ switch ($registry->requestAction)
 		$data = array();
 		$error = array();
 		$countError=[];
+
 		if ($_SERVER['REQUEST_METHOD'] === "POST")
 		{
 			// POST values that will be validated
 			//img validate
+
 			if ( file_exists($_FILES['profilePicture']['tmp_name'])){
 
 				foreach ($_FILES['profilePicture'] as $type => $detailsImage) {
@@ -158,6 +168,8 @@ switch ($registry->requestAction)
 					}
 				}
 			}
+
+
 			$values = array('details' => 
 								array('firstName'=>(isset($_POST['firstName']) ? $_POST['firstName'] : ''),
 									  'lastName'=>(isset($_POST['lastName'])? $_POST['lastName'] : ''),
@@ -309,6 +321,8 @@ function validateImage ($type , $data) {
 	if ($type=="type"){
 		$allowedType=["image/png"=>"image/png",
 					"image/img"=>"image/img",
+					"image/jpg"=>"image/jpg",
+					"image/jpeg"=>"image/jpeg"
 		];
 		if (!array_key_exists($data, $allowedType)){
 			$errors['type']="Your image type is not allowed";
