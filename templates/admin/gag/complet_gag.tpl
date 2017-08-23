@@ -16,14 +16,14 @@ $(document).ready(function(){
 
 });
 var siteUrl='{SITE_URL}';
-  function like(id)
+  function like(id , type)
   {
-    var likes="{GAG_LIKES}";
+
     $.ajax({
         url: siteUrl + "/admin/gag/like",
         type: "POST",
         dataType: "Json",
-        data : {id: id,likes: likes},
+        data : {id: id , type: type},
         success:function(response){
           var id = response['id'];
           if (id == 1) {
@@ -40,15 +40,14 @@ var siteUrl='{SITE_URL}';
         }
         });
   }
-function dislike(id)
+function dislike(id , type)
 {
-  var likes="{GAG_LIKES}";
 
     $.ajax({
         url: siteUrl + "/admin/gag/dislike",
         type: "POST",
         dataType: "Json",
-        data : {id: id,likes: likes},
+        data : {id: id ,type : type},
         success:function(response){
             var id = response['id'];
             if (id == -1) {
@@ -81,7 +80,7 @@ function dislike(id)
               <td class="rightalign">
                 </div>
                 <span id ="likes">[ {GAG_LIKES} ]</span>
-                <button onclick='like({GAG_ID});' id="like">Like</button>
+                <button onclick='like({GAG_ID} , "post");' id="like">Like</button>
                 <button onclick='dislike({GAG_ID});' id="dislike">Dislike</button>
                   <hr>
                     <div class="box_header">
@@ -99,7 +98,11 @@ function dislike(id)
 <!-- BEGIN comment_list -->
             <tr>
     
-              <td><h3> Posted on {COMMENT_DATE} by {COMMENT_USERNAME}</h3></td>
+              <td>
+                <span id ="likes">[ {COMMENT_LIKES} ]</span>
+                <button onclick='like({COMMENT_ID} , com);' id="like">Like</button>
+                <button onclick='dislike({COMMENT_ID, com});' id="dislike">Dislike</button>
+              <h3> Posted on {COMMENT_DATE} by {COMMENT_USERNAME}</h3></td>
 
             </tr>
             <tr>
@@ -117,6 +120,9 @@ function dislike(id)
     <!-- BEGIN comment_reply -->
     <tr>
       <td>
+      <span id ="likes">[ {COMMENT_LIKES} ]</span>
+      <button onclick='like({COMMENT_ID} , com);' id="like">Like</button>
+      <button onclick='dislike({COMMENT_ID, com});' id="dislike">Dislike</button>
        ↪️Reply posted on {REPLY_DATE} by {REPLY_USERNAME}
       </td>
     </tr>

@@ -18,34 +18,44 @@ class Gag extends Dot_Model
 			$comepletedData[$gag['id']]['id'] = $gag['id'];
 			$comepletedData[$gag['id']]['urlimage'] = $gag['urlimage'];
 			$comepletedData[$gag['id']]['likes']=0;
-			$likes= $this->getLikeByPost($gag['id']);
-				foreach ($likes as $like) {
+            $comepletedData[$gag['id']]['arrayLikes']=[];
+			$likes= $this->getLikeByPost($gag['id'], "post");
+				foreach ($likes as $key=> $like) {
 					$comepletedData[$gag['id']]['likes'] +=$like['like'];
-				}
+                    foreach ($like as $key1=>$value){
+                        $comepletedData[$gag["id"]]['arrayLikes'][$key][$key1]=$value;
 
-
-		}
+                    }
+                }
+        }
 
 		return $comepletedData;
 	}
 	// get details and likes for one post
-	public function getGagById($id)
-	{	
-		$select = $this->db->select()
-						   ->from('post')
-						   ->where('id= ?',$id);
+	public function getGagOrComById($id ,$type="post")
+    {
+        $tabel=$type;
+        if ($type==="com"){
+            $tabel="comment";
+        }
+        $select = $this->db->select()
+            ->from($tabel)
+            ->where('id= ?',$id);
 
-		$likes= $this->getLikeByPost($id);
-		$result=$this->db->fetchRow($select);
-		$result['likes']=0;
-		foreach ($likes as $like) {
-		$result["likes"]+=$like['like'];
-		}
-		return $result;
+        $likes= $this->getLikeByPost($id, $type);
+        $result=$this->db->fetchRow($select);
+        $result['likes']=0;
+        foreach ($likes as $key => $like) {
+            $result["likes"]+=$like['like'];
+            foreach ($like as $key1=>$value){
+                $result["arrayLikes"][$key][$key1]=$value;
+            }
+        }
+        return $result;
 
-	}
-	//get comment by id
-	public function getCommentById($id)
+    }
+    //get comment by id
+    public function getCommentById($id)
 	{	
 		$select = $this->db->select()
 						   ->from('comment')
@@ -55,13 +65,15 @@ class Gag extends Dot_Model
 
 	}
 	//get the comment by the gag id
-	public function getComments($gagId)
+	public function getLastComment($gagId,$userId)
 	{
 		$select=$this->db->select()
 						->from('comment')
 						->where('idPost = ?', $gagId)
-						->join('user', 'comment.idUser = user.id', ['username' => 'username']);
-		$result=$this->db->fetchAll($select);
+                        ->where('idUser = ?', $userId)
+						->join('user', 'comment.idUser = user.id', ['username' => 'username'])
+                        ->order('date DESC');
+		$result=$this->db->fetchRow($select);
 		return $result;
 	}
 	//gets all comments parents of an post
@@ -88,11 +100,20 @@ class Gag extends Dot_Model
 			$comepletedData[$value['id']]['date'] = $value['date'];
 			$comepletedData[$value['id']]['parent_id'] = $value['parent_id'];
 			$comepletedData[$value['id']]['id'] = $value['id'];
+            $comepletedData[$value['id']]['likes']=0;
+            $likes=$this->getLikeByPost($value['id'], "com");
+            foreach ($likes as $like) {
+                $comepletedData[$value['id']]['likes']+=$like['like'];
+                foreach ($like as $keyLike=>$valueLike){
+                    $comepletedData[$value['id']]["arrayLikes"][$key][$keyLike]=$valueLike;
+                }
+            }
+
 			if(isset($replies) && !empty($replies))
 			{
 				$comepletedData[$value['id']]['replies'] = $replies;
-			}
-		}
+            }
+        }
 		return $comepletedData;
 	}
 	//get coment reply by coment id
@@ -103,6 +124,17 @@ class Gag extends Dot_Model
 	                    ->where('parent_id = ?', $id)
 	                    ->join('user','user.id = comment.idUser','username');
 	    $result = $this->db->fetchAll($select);
+	    foreach ($result as $key => $reply){
+            $result[$key]['likes']=0;
+            $likes=$this->getLikeByPost($reply['id'], "com");
+            foreach ($likes as $likeKey => $like) {
+                $result[$key]['likes']+=$like['like'];
+                foreach ($like as $keyValue=>$value){
+                    $result[$key]["arrayLikes"][$likeKey][$keyValue]=$value;
+                }
+            }
+    }
+
 	    return $result;
 	}
 	// add a new Gag with post method
@@ -114,7 +146,6 @@ class Gag extends Dot_Model
 	// add a new comment for an atricle with post method
 	public function addComment($data)
 	{
-
 		$this->db->insert('comment',$data);
 	}
 	//update gag
@@ -126,12 +157,23 @@ class Gag extends Dot_Model
 	public function deleteGag($id)
 	{
 		$this->db->delete('post', 'id = ' . $id);
+		$deleteLikeWhere = array(
+		    'id_post = ?' => $id,
+		    'type = ?' => "post"
+		);
+		$this->db->delete('postLike', $deleteLikeWhere);
+		$this->db->delete('comment', 'idPost = '. $id);
 	}
 	//delet comment
 	public function deleteComment($id)
 	{
 		$this->db->delete('comment', 'id = ' . $id);
 		$this->db->delete('comment', 'parent_id = ' . $id);
+		$deleteLikeWhere = array(
+		    'id_post = ?' => $id,
+		    'type = ?' => "com"
+		);
+		$this->db->delete('postLike', $deleteLikeWhere);
 	}
 	 //updates a comment into the table comment
     public function editCommentById($a, $commentId)
@@ -144,26 +186,35 @@ class Gag extends Dot_Model
     	$this->db->insert('postLike',$data);
     }
     //edit like on gag
-    public function editLike($a,$likeId)
+    public function editLike($a,$idType,$idUser , $type)
     {
-    	$this->db->update('postLike', $a, 'id = ' . $likeId);
+    	$where = array(
+		    'id_post = ?' => $idType,
+		    'id_user = ?' => $idUser,
+		    'type = ?' => $type
+		);
+		$this->db->update('postLike', $a, $where);
     }
     // get like on id post and id user
-    public function getLike ($postId, $userId)
+    public function getLike ($postId, $userId, $type)
     {
     	$select = $this->db->select()
 						   ->from('postLike')
 						   ->where('id_post= ?', $postId)
-						   ->where('id_user= ?', $userId);
+						   ->where('id_user= ?', $userId)
+						   ->where('type= ?', $type);;
+
 		$result=$this->db->fetchRow($select);
+
 		return $result;
     }
     // get like on id post
-    public function getLikeByPost ($postId)
+    public function getLikeByPost ($postId , $type)
     {
     	$select = $this->db->select()
 						   ->from('postLike')
-						   ->where('id_post= ?', $postId);
+						   ->where('id_post= ?', $postId)
+                            ->where('type = ?', $type);
 		$result=$this->db->fetchAll($select);
 		return $result;
     }

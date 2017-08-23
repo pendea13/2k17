@@ -40,3 +40,5 @@ Thumbs.db
 #*.ini
 
 configs/application.ini
+Zend/
+.idea/
