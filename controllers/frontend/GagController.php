@@ -54,26 +54,34 @@ switch ($registry->requestAction)
 		break;
 	case 'comment':
 		if (!empty($session->user->id)){
-			if (isset($_POST['id'])||!empty($_POST['id']))
+			if (isset($_POST['parent_id'])||!empty($_POST['parent_id']))
 			{  
-				Zend_Debug::dump($_POST); exit();
+//				Zend_Debug::dump($_POST); exit();
 					 if (array_key_exists('id', $_POST)) {
 		                        $comment = [
-		                                'content' => $_POST['content']
+		                                'content' => $_POST['conntent']
 		                                ];
-		                        $gagModel->editCommentById($comment, $_POST['id']);
-								header('Location: '.$registry->configuration->website->params->url.'/gag/show/id/'.$registry->request["id"]);
+		                        $gagModel->editCommentById($comment, $_POST['gagId']);
 		                    } else {
 								$data=['idUser'=>$session->user->id,
-								'content'=>$_POST["comment"],
-								'idPost'=>$registry->request["id"],
+								'content'=>$_POST["conntent"],
+								'idPost'=>$_POST['gagId'],
 								'parent_id'=>$_POST['parent_id']
 								];
 								$gagModel->addComment($data);
-								header('Location: '.$registry->configuration->website->params->url.'/gag/show/id/'.$registry->request["id"]);
-		                    }
-		        echo Zend_Json::encode($result);
-					exit;
+                                $newComment=$gagModel->getLastComment($_POST['gagId'],$session->user->id);
+                         $result=['success'=>"true",
+                                     "likes"=>'0',
+                                     'commentId'=>$newComment['id'],
+                                     'parent_id'=>$newComment['parent_id'],
+                                     'date'=>$newComment['date'],
+                                     'username'=>$newComment['username'],
+                                     'conntent'=> $newComment['content'],
+                                     "id"=>1];
+//                         Zend_Debug::dump($newComment); exit;
+                         echo Zend_Json::encode($result);
+                         exit;
+                     }
 				}
 		} else {
 				$_SESSION['saveUrl']=$_SERVER["HTTP_REFERER"];

@@ -65,13 +65,15 @@ class Gag extends Dot_Model
 
 	}
 	//get the comment by the gag id
-	public function getComments($gagId)
+	public function getLastComment($gagId,$userId)
 	{
 		$select=$this->db->select()
 						->from('comment')
 						->where('idPost = ?', $gagId)
-						->join('user', 'comment.idUser = user.id', ['username' => 'username']);
-		$result=$this->db->fetchAll($select);
+                        ->where('idUser = ?', $userId)
+						->join('user', 'comment.idUser = user.id', ['username' => 'username'])
+                        ->order('date DESC');
+		$result=$this->db->fetchRow($select);
 		return $result;
 	}
 	//gets all comments parents of an post
@@ -144,7 +146,6 @@ class Gag extends Dot_Model
 	// add a new comment for an atricle with post method
 	public function addComment($data)
 	{
-
 		$this->db->insert('comment',$data);
 	}
 	//update gag
@@ -156,12 +157,23 @@ class Gag extends Dot_Model
 	public function deleteGag($id)
 	{
 		$this->db->delete('post', 'id = ' . $id);
+		$deleteLikeWhere = array(
+		    'id_post = ?' => $id,
+		    'type = ?' => "post"
+		);
+		$this->db->delete('postLike', $deleteLikeWhere);
+		$this->db->delete('comment', 'idPost = '. $id);
 	}
 	//delet comment
 	public function deleteComment($id)
 	{
 		$this->db->delete('comment', 'id = ' . $id);
 		$this->db->delete('comment', 'parent_id = ' . $id);
+		$deleteLikeWhere = array(
+		    'id_post = ?' => $id,
+		    'type = ?' => "com"
+		);
+		$this->db->delete('postLike', $deleteLikeWhere);
 	}
 	 //updates a comment into the table comment
     public function editCommentById($a, $commentId)

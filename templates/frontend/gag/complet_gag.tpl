@@ -7,9 +7,8 @@ $(document).ready(function(){
         $(this).prevAll('.content').contents().unwrap().wrap('<form method="POST" action=""><textarea name="comment"/><button name="id" value="'+editid+'" type="submit">Save</button></form>');
         $(this).hide();
     });
-
- 	$("button.reply").click(function () {
-		var replying = $(this).attr("id");
+    $(document).on('click', '.reply', function () {
+		    var replying = $(this).attr("id");
         $(this).css('display' ,'none');
         $("#form_"+replying).css('display' ,'block');
 
@@ -78,25 +77,34 @@ function dislike(id , type)
         }
     });
 }
-function comment(id='0',gagId)
-{ var conntent=$('#conntent_'+id).val();
+function comment(gagId , parent_id='0')
+{ var conntent=$('#conntent_'+parent_id).val();
+  var com="'com'";
+  var deleteUrl="/gag/delete-comment/id/";
   $.ajax({
         url: siteUrl + "/gag/comment",
         type: "POST",
         dataType: "Json",
-        data : {id: id,conntent:conntent},
+        data : {parent_id : parent_id ,conntent : conntent, gagId : gagId },
         success:function(response){
-            var idComment = response['id'];
-            var idParent = response['id_parent'];
+            var idComment = response['commentId'];
+            var idParent = response['parent_id'];
             var postId= response['postId'];
             var likes = response['likes'];
             var commentDate = response['date'];
-            var commentUsername = response['username']; 
+            var commentUsername = response['username'];
+            var conntent = response['conntent']; 
             if (response==false){
                 window.location='{SITE_URL}/user/login/';
-            }else {
-                $("#form_"+id).append("divul");
-            }
+            }else if(parent_id=='0') {
+                $("#append_"+gagId).prepend('<hr><tr><td> <span id ="likes_'+idComment+'_com" no ="'+likes+'">[ '+likes+' ]</span><button  onclick="like('+idComment+' , '+com+');" id="like_'+idComment+'_com">⇧</button><button  onclick="dislike('+idComment+' ,'+com+');" id="dislike_'+idComment+'_com">⇩</button><h3> Posted on '+commentDate+' by '+commentUsername+'</h3></td></tr><tr><td><p class="content" no="'+idComment+'">'+conntent+'</p><button id="'+idComment+'" class="edit rightalign">Edit</button><button onclick=window.location="'+siteUrl+deleteUrl+idComment+'" title="Delete" class="delete_state rightalign">Delete</button><button id="'+idComment+'" class="reply btn btn-primary">Reply</button><p>Replys :</p><div id="form_'+idComment+'" style="display: none;" ><textarea rows="2" cols="70" id="conntent_'+idComment+'"></textarea><button onclick="comment('+gagId+','+idComment+');">Reply</button><hr></div><div id="append_'+idComment+'"></div></td></tr>');
+                $('textarea#conntent_'+idParent).val('');
+            } else {
+                $("#append_"+parent_id).prepend('<hr><tr><td>↪<span id ="likes_'+idComment+'_com" no ="'+likes+'">[ '+likes+' ]</span><button style="{REPLY_LIKED}" onclick="like('+idComment+' , '+com+');" id="like_'+idComment+'_com">⇧</button><button style="{REPLY_DISLIKE}" onclick="dislike('+idComment+' ,'+com+');" id="dislike_'+idComment+'_com">⇩</button>️Reply posted on '+commentDate+' by '+commentUsername+'</td></tr> <tr><td> <p class="content" no="'+idComment+'">'+conntent+'</p><button id="'+idComment+'" class="edit brightalign">Edit</button> <button onclick=window.location="'+siteUrl+deleteUrl+idComment+'" title="Delete" class="delete_state rightalign">Delete</button> </td> </tr>');
+                  $("#form_"+parent_id).css('display' ,'none');
+                  $("#"+parent_id+".reply").css('display' ,'inline');
+                  $('textarea#conntent_'+idParent).val('');
+              }
         }
     });
 
@@ -119,13 +127,16 @@ function comment(id='0',gagId)
                     <span id ="likes_{GAG_ID}_post" no ='{GAG_LIKES}'>[ {GAG_LIKES} ]</span>
                     <button style="{USER_LIKED}" onclick='like({GAG_ID} , "post");' id="like_{GAG_ID}_post">⇧</button>
                     <button style="{USER_DISLIKE}" onclick='dislike({GAG_ID} ,"post");' id="dislike_{GAG_ID}_post">⇩</button>
+                  <div>
                   <hr>
-                  <form method="post" action="">
                     <input type="hidden" name="parent_id" value="0">
                     <label for="comment">Comment:</label>
-                    <textarea rows="2" cols="70" name="comment"></textarea>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                  </form>
+                    <textarea rows="2" cols="70" id="conntent_0"></textarea>
+                    <button onclick='comment({GAG_ID});' class="btn btn-primary">Submit</button>
+                  </div>
+                  <div  id="append_{GAG_ID}">
+                    
+                  </div>
                   <hr>
                 </div>
               </td>
@@ -143,19 +154,22 @@ function comment(id='0',gagId)
             <tr>
                 
               <td>
-                  <p class="content" no={COMMENT_ID}>{COMMENT_CONTENT}</p>
+                  <p class="content" no="{COMMENT_ID}">{COMMENT_CONTENT}</p>
                   <!-- BEGIN comment_list_buttones -->
                 <button id="{COMMENT_ID}" class="edit rightalign">Edit</button>
                 <button onclick="window.location='{SITE_URL}/gag/delete-comment/id/{COMMENT_ID}';" title="Delete" class="delete_state rightalign">Delete</button>
                 <!-- END comment_list_buttones -->
                 <button id="{COMMENT_ID}" class="reply btn btn-primary">Reply</button>
                   <p>Replys :</p>
+                  <div id="form_{COMMENT_ID}" style="display: none;" >
                   <hr>
-                  <form id="form_{COMMENT_ID}" style="display: none;" >
                   <textarea rows="2" cols="70" id="conntent_{COMMENT_ID}"></textarea>
-                  <button onclick='comment({COMMENT_ID}, {GAG_ID});'>Reply</button>
+                  <button onclick='comment({GAG_ID} , {COMMENT_ID});'>Reply</button>
+                  </div>
+                  <div id="append_{COMMENT_ID}">
+                    
+                  </div>
                   <hr>
-                  </form>
               </td>
             </tr>
         
@@ -170,7 +184,7 @@ function comment(id='0',gagId)
     </tr>
     <tr>
       <td>
-      <p class="content" no={REPLY_ID}>{REPLY_CONTENT}</p>
+      <p class="content" no="{REPLY_ID}">{REPLY_CONTENT}</p>
         <!-- BEGIN comment_reply_buttones -->
         <button id="{REPLY_ID}" class="edit brightalign">Edit</button>
         <button onclick="window.location='{SITE_URL}/gag/delete-comment/id/{REPLY_ID}';" title="Delete" class="delete_state rightalign">Delete</button>
