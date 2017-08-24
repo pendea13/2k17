@@ -131,6 +131,7 @@ class Gag_View extends View
 		$this->tpl->setBlock('comment_reply','comment_reply_buttones','comment_reply_buttones_block');
 
 		foreach ($commentList as $comment) {
+            $this->tpl->setVar("COMMENT_URLIMAGE",$comment['urlimage']);
 			$this->tpl->setVar("COMMENT_USERNAME",$comment['username']);
 			$this->tpl->setVar("COMMENT_ID",$comment['id']);
             $this->tpl->setVar("COMMENT_LIKES",$comment['likes']);

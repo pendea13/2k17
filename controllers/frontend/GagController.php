@@ -6,16 +6,20 @@ $gagView = new Gag_View($tpl);
 $gagModel= new Gag();
 
 $pageTitle = $option->pageTitle->action->{$registry->requestAction};
+$userIdLoged=$session->user->id;
 switch ($registry->requestAction)
 {
 	default:
-	case 'list':
- 		$list= $gagModel->getGagList();
- 		// Zend_Debug::dump($list); exit();
+	case 'list-by-rank':
+ 		$list= $gagModel->getGagList($userIdLoged);
  		$gagView->showGagList('gag_list', $list);
 		break;
+	case 'list-by-date':
+		$list= $gagModel->getGagList($userIdLoged,'date DESC');
+		$gagView->showGagList('gag_list', $list);
+	break;
 	case 'edit':
-		$gag= $gagModel->getGagById($registry->request["id"]);
+		$gag= $gagModel->getGagById($registry->request["id"],$userIdLoged);
 		if ($_SERVER['REQUEST_METHOD'] === "POST") {	
 			$data=['title'=>$_POST["title"],
 					];
@@ -47,8 +51,8 @@ switch ($registry->requestAction)
 		$gagView->showAddGag('gag_add');
 		break;
 	case 'show':
-		$singelGagData=$gagModel->getGagOrComById($registry->request["id"]);
-		$commentsList=$gagModel->getCommentByArticleId($registry->request["id"]);
+		$singelGagData=$gagModel->getGagOrComById($registry->request["id"],$userIdLoged);
+		$commentsList=$gagModel->getCommentByArticleId($registry->request["id"],$userIdLoged);
 		$gagView->showGagById('complet_gag',$singelGagData);
 		$gagView->showComments('complet_gag',$commentsList);
 		break;
@@ -56,7 +60,6 @@ switch ($registry->requestAction)
 		if (!empty($session->user->id)){
 			if (isset($_POST['parent_id'])||!empty($_POST['parent_id']))
 			{  
-//				Zend_Debug::dump($_POST); exit();
 					 if (array_key_exists('id', $_POST)) {
 		                        $comment = [
 		                                'content' => $_POST['conntent']
@@ -78,7 +81,6 @@ switch ($registry->requestAction)
                                      'username'=>$newComment['username'],
                                      'conntent'=> $newComment['content'],
                                      "id"=>1];
-//                         Zend_Debug::dump($newComment); exit;
                          echo Zend_Json::encode($result);
                          exit;
                      }
@@ -167,7 +169,7 @@ switch ($registry->requestAction)
 
                             $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
 
-                            $singelGagData=$gagModel->getGagOrComById($_POST['id'], $_POST['type']);
+                            $singelGagData=$gagModel->getGagOrComById($_POST['id'],$userIdLoged , $_POST['type']);
                             $result=['success'=>"true",
                             	"likes"=>$singelGagData['likes'],
                             	'postId'=>$_POST['id'],
@@ -176,7 +178,7 @@ switch ($registry->requestAction)
                             $editLike=['like'=>'0'];
 
                             $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
-                            $singelGagData=$gagModel->getGagOrComById($_POST['id'],$_POST['type']);
+                            $singelGagData=$gagModel->getGagOrComById($_POST['id'],$userIdLoged ,$_POST['type']);
                             $result=['success'=>"true",
                             "likes"=>$singelGagData['likes'],
                             'postId'=>$_POST['id'],
@@ -185,7 +187,7 @@ switch ($registry->requestAction)
                             $editLike=['like'=>'1'];
 
                             $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
-                            $singelGagData=$gagModel->getGagOrComById($_POST['id'],$_POST['type']);
+                            $singelGagData=$gagModel->getGagOrComById($_POST['id'],$userIdLoged ,$_POST['type']);
                             $result=['success'=>"true",
                             "likes"=>$singelGagData['likes'],
                             'postId'=>$_POST['id'],
@@ -201,7 +203,7 @@ switch ($registry->requestAction)
 								'like'=>"1",
 								];
 						$gagModel->addLikeOrDislikeGag($data);
-						$singelGagData=$gagModel->getGagOrComById($_POST['id'],$_POST['type']);
+						$singelGagData=$gagModel->getGagOrComById($_POST['id'],$userIdLoged ,$_POST['type']);
 						$result=['success'=>"true",
 						"likes"=>$singelGagData['likes'],
 						'postId'=>$_POST['id'],
@@ -229,7 +231,7 @@ switch ($registry->requestAction)
 	                    $editLike=['like'=>'0'];
 
 	                    $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
-	                    $singelGagData=$gagModel->getGagOrComById($_POST['id'],$_POST['type']);
+	                    $singelGagData=$gagModel->getGagOrComById($_POST['id'],$userIdLoged ,$_POST['type']);
 	                    $result=['success'=>"true",
 	                    "likes"=>$singelGagData['likes'],
 	                    'postId'=>$_POST['id'],
@@ -238,7 +240,7 @@ switch ($registry->requestAction)
 	                    $editLike=['like'=>'-1'];
 
 	                    $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
-	                    $singelGagData=$gagModel->getGagOrComById($_POST['id'],$_POST['type']);
+	                    $singelGagData=$gagModel->getGagOrComById($_POST['id'],$userIdLoged ,$_POST['type']);
 	                    $result=['success'=>"true",
 	                    "likes"=>$singelGagData['likes'],
 	                    'postId'=>$_POST['id'],
@@ -247,7 +249,7 @@ switch ($registry->requestAction)
 	                    $editLike=['like'=>'0'];
 
 	                    $gagModel->editLike($editLike,$like['id_post'],$like['id_user'],$like['type']);
-	                    $singelGagData=$gagModel->getGagOrComById($_POST['id'],$_POST['type']);
+	                    $singelGagData=$gagModel->getGagOrComById($_POST['id'],$userIdLoged ,$_POST['type']);
 	                    $result=['success'=>"true",
 	                    "likes"=>$singelGagData['likes'],
 	                    'postId'=>$_POST['id'],
@@ -263,7 +265,7 @@ switch ($registry->requestAction)
 	                    'like'=>"-1",
 	                ];
 	                $gagModel->addLikeOrDislikeGag($data);
-	                $singelGagData=$gagModel->getGagOrComById($_POST['id'],$_POST['type']);
+	                $singelGagData=$gagModel->getGagOrComById($_POST['id'],$userIdLoged ,$_POST['type']);
 	                $result=['success'=>"true",
 	                "likes"=>$singelGagData['likes'],
 	                'postId'=>$_POST['id'],

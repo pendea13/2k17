@@ -147,7 +147,7 @@ function comment(gagId , parent_id='0')
                 <td> <span id ="likes_{COMMENT_ID}_com" no ='{COMMENT_LIKES}'>[ {COMMENT_LIKES} ]</span>
                   <button style="{COMMENT_LIKED}" onclick='like({COMMENT_ID} , "com");' id="like_{COMMENT_ID}_com">⇧</button>
                   <button style="{COMMENT_DISLIKE}" onclick='dislike({COMMENT_ID} ,"com");' id="dislike_{COMMENT_ID}_com">⇩</button>
-                  <h3> Posted on {COMMENT_DATE} by {COMMENT_USERNAME}</h3>
+                   <img src="{COMMENT_URLIMAGE}" width="100" height="100"><h3> Posted on {COMMENT_DATE} by {COMMENT_USERNAME}</h3>
                   </td>
 
             </tr>
