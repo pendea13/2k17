@@ -7,12 +7,19 @@ class Gag extends Dot_Model
 		parent::__construct();
 	}
 	//get a list of gags
-	public function getGagList($userId='',$dateDesc='')
+	public function getGagList($userId='',$dateDesc='',$postForUser='')
 	 { 
-
-		$select = $this->db->select()
-						   ->from('post')
-						   ->order($dateDesc);
+	 	if($postForUser!==''){
+			$select = $this->db->select()
+							   ->from('post')
+							   ->where('userId = ?',$postForUser)
+							   ->order($dateDesc);
+	 	}else {
+			$select = $this->db->select()
+							   ->from('post')
+							   ->order($dateDesc);
+	 		
+	 	}
  		$result=$this->db->fetchAll($select);
  		$comepletedData = [];
 		foreach ($result as $gag) {
@@ -78,8 +85,11 @@ class Gag extends Dot_Model
 	{	
 		$select = $this->db->select()
 						   ->from('comment')
-						   ->where('id= ?',$id);
-		$result=$this->db->fetchAll($select);
+						   ->where('comment.id = ?', $id)
+						   ->join('user', 'comment.idUser = user.id', ['username' => 'username',
+																	'urlimage'=>'urlimage'
+																	]);
+		$result=$this->db->fetchRow($select);
 		return $result;
 
 	}
@@ -116,7 +126,7 @@ class Gag extends Dot_Model
 		$comepletedData = [];
 		$parentsComments= $this->getCommentsParents($id);
 		foreach ($parentsComments as $key => $value) {
-			$replies = $this->getCommentReplytByCommentId($value['id']);
+			$replies = $this->getCommentReplytByCommentId($value['id'],$userId);
 			$comepletedData[$value['id']]['content'] = $value['content'];
 			$comepletedData[$value['id']]['idUser'] = $value['idUser'];
 			$comepletedData[$value['id']]['urlimage'] = $value['urlimage'];
@@ -153,7 +163,7 @@ class Gag extends Dot_Model
 	public function getCommentReplytByCommentId($id,$userId='')
 	{
 		$select = $this->db->select()
-	                    ->from('comment',array('content','date','idUser', 'id','parent_id'))
+	                    ->from('comment')
 	                    ->where('parent_id = ?', $id)
 	                    ->join('user','user.id = comment.idUser',['username' => 'username',
 																	'urlimage'=>'urlimage',
@@ -174,8 +184,21 @@ class Gag extends Dot_Model
 	            }
 	        }
     }
-
+    
 	    return $result;
+	}
+	//get all notiifications for one user
+	public function getNews($id){
+		$select = $this->db->select()
+	                    ->from('news')
+	                    ->where('id_user_post = ?', $id)
+	                    ->join('user','user.id = news.id_user_made',['username' => 'username',
+																	'urlimage'=>'urlimage',
+																	]);
+	                   
+	    $result = $this->db->fetchAll($select);
+	    return $result;
+
 	}
 	// add a new Gag with post method
 	public function addGag($data)
