@@ -87,7 +87,7 @@ class Gag extends Dot_Model
 						   ->from('comment')
 						   ->where('comment.id = ?', $id)
 						   ->join('user', 'comment.idUser = user.id', ['username' => 'username',
-																	'urlimage'=>'urlimage'
+																	'urlimage'=>'urlimage',
 																	]);
 		$result=$this->db->fetchRow($select);
 		return $result;
@@ -101,7 +101,7 @@ class Gag extends Dot_Model
 						->where('idPost = ?', $gagId)
                         ->where('idUser = ?', $userId)
 						->join('user', 'comment.idUser = user.id', ['username' => 'username',
-																	'urlimage'=>'urlimage',
+                                                                    'urlimage'=>'urlimage',
 																	])
                         ->order('date DESC');
 		$result=$this->db->fetchRow($select);
@@ -115,7 +115,7 @@ class Gag extends Dot_Model
 						->where('idPost = ?', $gagId)
 						->where('parent_id = ?', 0)
 						->join('user', 'comment.idUser = user.id', ['username' => 'username',
-																	'urlimage'=>'urlimage',
+                                                                    'urlimage'=>'urlimage',
 																	]);
 		$result=$this->db->fetchAll($select);
 		return $result;
@@ -166,7 +166,7 @@ class Gag extends Dot_Model
 	                    ->from('comment')
 	                    ->where('parent_id = ?', $id)
 	                    ->join('user','user.id = comment.idUser',['username' => 'username',
-																	'urlimage'=>'urlimage',
+                                                                    'urlimage'=>'urlimage',
 																	]);
 	    $result = $this->db->fetchAll($select);
 	    foreach ($result as $key => $reply){
@@ -188,18 +188,39 @@ class Gag extends Dot_Model
 	    return $result;
 	}
 	//get all notiifications for one user
-	public function getNews($id){
+	public function getNews($id)
+    {
 		$select = $this->db->select()
 	                    ->from('news')
 	                    ->where('id_user_post = ?', $id)
+	                    ->order('new DESC')
 	                    ->join('user','user.id = news.id_user_made',['username' => 'username',
 																	'urlimage'=>'urlimage',
 																	]);
-	                   
-	    $result = $this->db->fetchAll($select);
+	    $select1 = $this->db->select()
+	                    ->from('news',array('count' => 'COUNT(*)' ))
+	                    ->where('id_user_post = ?', $id)
+	                    ->where('new = 1');
+	    $result1 = $this->db->fetchRow($select1);
+	    $result["news"] = $this->db->fetchAll($select);
+	    $result['count']= $result1["count"];
 	    return $result;
 
 	}
+	//get gag user id
+    public function getGagUserId($id)
+    {
+        $select = $this->db->select()
+            ->from('post', array('userId'))
+            ->where('id= ?',$id);
+        $result = $this->db->fetchOne($select);
+        return $result;
+    }
+	//add new notification
+    public  function addNews($data)
+    {
+        $this->db->insert('news',$data);
+    }
 	// add a new Gag with post method
 	public function addGag($data)
 	{

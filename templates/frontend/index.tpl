@@ -10,9 +10,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link rel="canonical" href="{CANONICAL_URL}" >
 	<link rel="stylesheet" href="{TEMPLATES_URL}/css/frontend/style.css" type="text/css" >
-	<link rel="stylesheet" href="{SITE_URL}/externals/fonts/stylesheet.css" type="text/css" >	
+	<link rel="stylesheet" href="{SITE_URL}/externals/fonts/stylesheet.css" type="text/css" >
 	<script src="{SITE_URL}/externals/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="{TEMPLATES_URL}/js/frontend/main.js"></script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	<!--[if lt IE 9]>
 	<script src="{TEMPLATES_URL}/js/frontend/html5shim.js"></script>
 	<![endif]-->
@@ -23,14 +24,14 @@
 		<div class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 		<div class="navbar-header">
-	
+
 					<h1><a class="navbar-brand" href="{SITE_URL}/"><img height="35" width="50" src="{SITE_URL}/images/2K17-logo.png"></a></h1>
 						<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
 	            <span class="icon-bar"></span>
 	            <span class="icon-bar"></span>
 	            <span class="icon-bar"></span>
 	          </button>
-				
+
 
 				</div>
 				<div class="navbar-collapse collapse" id="navbar-main">
@@ -39,7 +40,7 @@
 			</div>
 			</div>
 		</header>
-	
+
 
 			<div class="container">
 			<div class="jumbotron">

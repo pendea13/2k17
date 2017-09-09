@@ -222,6 +222,11 @@ switch ($registry->requestAction)
 		}
 		$userView->details('add',$data);
 	break;
+    case 'user-details':
+        $data1=$userModel->getUserInfo($registry->request["id"]);
+//        Zend_Debug::dump ($data1); exit();
+        $userView->details('user_details', $data1);
+        break;
 	case 'forgot-password':
 		// send an emai with the forgotten password
 		$data = array();

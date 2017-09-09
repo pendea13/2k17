@@ -69,41 +69,54 @@ switch ($registry->requestAction)
 	case 'comment':
 		if (!empty($session->user->id)){
 			if (isset($_POST['parent_id'])||!empty($_POST['parent_id']))
-			{  
-					 if (array_key_exists('id', $_POST)) {
-		                        $comment = [
-		                                'content' => htmlentities($_POST['conntent'])
-		                                ];
-		                        $gagModel->editCommentById($comment, $_POST['gagId']);
-		                    } else {
-		                    	$match='';
-		                    	$parentComment=$gagModel->getCommentById($_POST['parent_id']);
+			{
+                if (array_key_exists('id', $_POST)) {
+                    $comment = [
+                        'content' => htmlentities($_POST['conntent'])
+                    ];
+                    $gagModel->editCommentById($comment, $_POST['gagId']);
+                } else {
+                    $match='';
+                    $parentComment=$gagModel->getCommentById($_POST['parent_id']);
 
-								$data=['idUser'=>$session->user->id,
-								'content'=>htmlentities($_POST["conntent"]),
-								'idPost'=>$_POST['gagId'],
-								'parent_id'=>$_POST['parent_id']
-								];
-		                    	if (preg_match('/^@'.$parentComment['username'].' /', $_POST['conntent'], $match)) {
-		                    	$data['content']=preg_replace('/^@'.$parentComment['username'].' /','', $_POST['conntent'],1);
-		                    	$data['linkUser']="<a>".$match[0]."</a>";
-		                    	}
-								$gagModel->addComment($data);
-                                $newComment=$gagModel->getLastComment($_POST['gagId'],$session->user->id);
-                         $result=['success'=>"true",
-                                     "likes"=>'0',
-                                     'commentId'=>$newComment['id'],
-                                     'parent_id'=>$newComment['parent_id'],
-                                     'date'=>$newComment['date'],
-                                     'username'=>$newComment['username'],
-                                     'conntent'=> $newComment['linkUser'].$newComment['content'],
-                                     'urlimage'=> $newComment['urlimage'],
-                                     "id"=>1];
-                         echo Zend_Json::encode($result);
-                         exit;
-                     }
-				}
-		} else {
+                    $data=['idUser'=>$session->user->id,
+                        'content'=>htmlentities($_POST["conntent"]),
+                        'idPost'=>$_POST['gagId'],
+                        'parent_id'=>$_POST['parent_id']
+                    ];
+                    if (preg_match('/^@'.$parentComment['username'].' /', $_POST['conntent'], $match)) {
+                        $data['content']=preg_replace('/^@'.$parentComment['username'].' /','',$data['content'],1);
+                        $data['linkUser']="<a>".$match[0]."</a>";
+                    }
+                    $newsData=['new'=>'1',
+                        'id_user_made'=>$session->user->id
+                    ];
+                    $gagModel->addComment($data);
+                    $newComment=$gagModel->getLastComment($_POST['gagId'],$session->user->id);
+                    if ($_POST['parent_id']!='0'){
+                        $newsData['type']="com";
+                        $newsData['id_user_post']=$parentComment['idUser'];
+                        $newsData['id_post']=$newComment['id'];
+                    } else {
+                        $newsData['type']="post";
+                        $newsData['id_user_post']=$gagModel->getGagUserId($_POST['gagId']);
+                        $newsData['id_post']=$_POST['gagId'];
+                    }
+                    $gagModel->addNews($newsData);
+                    $result=['success'=>"true",
+                        "likes"=>'0',
+                        'commentId'=>$newComment['id'],
+                        'parent_id'=>$newComment['parent_id'],
+                        'date'=>$newComment['date'],
+                        'username'=>$newComment['username'],
+                        'conntent'=> $newComment['linkUser'].$newComment['content'],
+                        'urlimage'=> $newComment['urlimage'],
+                        "id"=>1];
+                    echo Zend_Json::encode($result);
+                    exit;
+                }
+            }
+        } else {
 				$_SESSION['saveUrl']=$_SERVER["HTTP_REFERER"];
 				echo Zend_Json::encode(false);
 				exit;

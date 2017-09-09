@@ -96,7 +96,7 @@ class View extends Dot_Template
 	 * @access public 
 	 * @return void
 	 */
-	public function setMenu()
+	public function setMenu($value='')
 	{
 		$dotAuth = Dot_Auth::getInstance();
 		$registry = Zend_Registry::getInstance();
@@ -109,14 +109,34 @@ class View extends Dot_Template
 		$this->setFile('tpl_menu_top', 'blocks/menu_top.tpl');
 		$this->setBlock('tpl_menu_top', 'top_menu_not_logged', 'top_menu_not_logged_block');
 		$this->setBlock('tpl_menu_top', 'top_menu_logged', 'top_menu_logged_block');
+        $this->setBlock('top_menu_logged', 'news', 'news_block');
 
 		// add selected to the correct menu item
+		// Zend_Debug::dump($value);exit;
 		$this->setVar($selectedItem, 'selected');
 		
 		if ($dotAuth->hasIdentity('user'))
 		{
 			$this->parse('top_menu_logged_block', 'top_menu_logged', true);
-			$this->setVar('USERNAME', $session->user->username);
+			$this->setVar('USERNAME_LOGGED', $session->user->username);
+            $this->setVar('NOTIFICATIONS', $value['count']);
+            $this->parse('news_block', '');
+            foreach ($value['news'] as $news)
+//            Zend_Debug::dump($news); exit();
+            {
+                $this->setVar('NEWS_ID_USER_MADE', $news['id_user_made']);
+                $this->setVar('NEWS_USERNAME', $news['username']);
+                $this->setVar('NEWS_URLIMAGE', $news['urlimage']);
+                $this->setVar('NEWS_TIME', $news['time']);
+                if ($news['type']=='post') {
+
+                    $this->setVar('NEWS_TYPE', "A comenat la postul");
+                } else {
+                    $this->setVar('NEWS_TYPE', "A raspuns la mesajul postat la");
+                }
+                $this->parse('news_block', 'news', true);
+            }
+
 			$this->parse('top_menu_not_logged_block', '');		
 		}
 		else

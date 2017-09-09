@@ -114,11 +114,9 @@ class Gag_View extends View
 	public function showComment ($templateFile='', $comment){
 		if ($templateFile != '') $this->templateFile = $templateFile;
 		$this->tpl->setFile('tpl_main', 'gag/' . $this->templateFile . '.tpl');
-		foreach ($comment as $context) {
-			foreach ($context as $contextKey => $contextValue) {
-			$this->tpl->setVar(strtoupper("COMMENT_".$contextKey),$contextValue);
-			}
-		}
+		$this->tpl->setVar('COMMENT_DATE',$comment['date']);
+        $this->tpl->setVar('COMMENT_USERNAME',$comment['username']);
+			
 
 	}
 	// showing commend list for Gag

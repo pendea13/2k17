@@ -19,6 +19,7 @@
 // initialize the session
 // if you don't use the session object in this module, feel free to remove this line
 Dot_Session::start();
+$session = Zend_Registry::get('session');
 
 if(Dot_UserAgent_Utilities::isMobile(Dot_Request::getUserAgent()))
 {
@@ -104,8 +105,18 @@ else
 	Dot_Route::pageNotFound();
 }
 
+
+
+
+
 // set menus
+$gagModel= new Gag();
+if(isset($session->user->id) && !empty($session->user->id)){
+$news=$gagModel->getNews($session->user->id);
+$tpl->setMenu($news);
+} else {
 $tpl->setMenu();
+}
 
 // set SEO html tags from dots/seo.xml file
 $tpl->setSeoValues($pageTitle);

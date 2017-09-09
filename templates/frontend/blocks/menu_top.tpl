@@ -22,32 +22,37 @@
 		<a href="{SITE_URL}/gag/list-by-user">My Gag`s</a> 
 	</li>
 	<li class="{SEL_USER_ACCOUNT}">
-		<a href="{SITE_URL}/user/account">{USERNAME}</a>
+		<a href="{SITE_URL}/user/account">{USERNAME_LOGGED}</a>
 	</li>
-	<li class="dropdown dropdown-notifications">
-            <a href="#notifications-panel" class="dropdown-toggle" data-toggle="dropdown">
-              <i data-count="10" class="glyphicon glyphicon-bell notification-icon"></i>
-            </a>
+	<ul class="nav navbar-nav navbar-right">
+		<li class="dropdown">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Notification (<b>{NOTIFICATIONS}</b>)</a>
+			<ul class="dropdown-menu notify-drop">
+				<div class="notify-drop-title">
+					<div class="row">
+						<div class="col-md-6 col-sm-6 col-xs-6">Notification (<b>{NOTIFICATIONS}</b>)</div>
+					</div>
+				</div>
+				<div class="drop-content">
+					<!-- BEGIN news -->
+					<li>
+						<div class="col-md-3 col-sm-3 col-xs-3"><div class="notify-img"><img src="{NEWS_URLIMAGE}" width="50" height="50"  alt=""></div></div>
+						<div class="col-md-9 col-sm-9 col-xs-9 pd-l0"><a href="{SITE_URL}/user/user-details/id/{NEWS_ID_USER_MADE}">{NEWS_USERNAME}</a>
 
-            <div class="dropdown-container">
+							<p>{NEWS_TYPE}</p>
+							<p class="time">{NEWS_TIME}</p>
+						</div>
+					</li>
+					<!-- END news -->
 
-              <div class="dropdown-toolbar">
-                <div class="dropdown-toolbar-actions">
-                  <a href="#">Mark all as read</a>
-                </div>
-                <h3 class="dropdown-toolbar-title">Notifications (2)</h3>
-              </div><!-- /dropdown-toolbar -->
 
-              <ul class="dropdown-menu">
-                  ...
-              </ul>
-
-              <div class="dropdown-footer text-center">
-                <a href="#">View All</a>
-              </div><!-- /dropdown-footer -->
-
-            </div><!-- /dropdown-container -->
-          </li><!-- /dropdown -->
+				</div>
+				<div class="notify-drop-footer text-center">
+					<a href=""><i class="fa fa-eye"></i> More</a>
+				</div>
+			</ul>
+		</li>
+	</ul>
 	<li>
 		<a href="{SITE_URL}/user/logout">Log Out</a>
 	</li>
