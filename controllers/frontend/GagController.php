@@ -102,7 +102,10 @@ switch ($registry->requestAction)
                         $newsData['id_user_post']=$gagModel->getGagUserId($_POST['gagId']);
                         $newsData['id_post']=$_POST['gagId'];
                     }
-                    $gagModel->addNews($newsData);
+                    if ($session->user->id!=$newsData['id_user_post']){
+
+                        $gagModel->addNews($newsData);
+                    }
                     $result=['success'=>"true",
                         "likes"=>'0',
                         'commentId'=>$newComment['id'],
@@ -310,5 +313,27 @@ switch ($registry->requestAction)
 			echo Zend_Json::encode(false);
 			exit;
 		}
+        break;
+    case 'update-news':
+        if (!empty($session->user->id)){
+            if (isset($_POST['id']) && !empty($_POST['id']) && $_POST['id']!==""){
+//                Zend_Debug::dump ($_POST['id']); exit();
+                $forUpdate=explode(",",$_POST['id']);
+                $data=["new"=>'0'];
+                foreach ($forUpdate as $id){
+                    $gagModel->updateNews($data,$id);
+                }
+                $news=$gagModel->getNews($session->user->id);
+
+                $result=['success'=>"true",
+                    'news'=>$news["count"]];
+                echo Zend_Json::encode($result);
+                exit;
+            }
+            $result=['success'=>"true",
+                'news'=>0];
+            echo Zend_Json::encode($result);
+            exit;
+        }
         break;
 }

@@ -7,11 +7,9 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DotKernel/frontend/View.php" afterPath="$PROJECT_DIR$/DotKernel/frontend/View.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DotKernel/frontend/views/GagView.php" afterPath="$PROJECT_DIR$/DotKernel/frontend/views/GagView.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/frontend/GagController.php" afterPath="$PROJECT_DIR$/controllers/frontend/GagController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/frontend/IndexController.php" afterPath="$PROJECT_DIR$/controllers/frontend/IndexController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/frontend/UserController.php" afterPath="$PROJECT_DIR$/controllers/frontend/UserController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/css/frontend/style.css" afterPath="$PROJECT_DIR$/templates/css/frontend/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/frontend/blocks/menu_top.tpl" afterPath="$PROJECT_DIR$/templates/frontend/blocks/menu_top.tpl" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/frontend/gag/complet_gag.tpl" afterPath="$PROJECT_DIR$/templates/frontend/gag/complet_gag.tpl" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/frontend/gag/gag_list.tpl" afterPath="$PROJECT_DIR$/templates/frontend/gag/gag_list.tpl" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/frontend/index.tpl" afterPath="$PROJECT_DIR$/templates/frontend/index.tpl" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,8 +37,8 @@
       <file leaf-file-name="GagController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/frontend/GagController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="103" column="21" lean-forward="false" selection-start-line="103" selection-start-column="21" selection-end-line="103" selection-end-column="21" />
+            <state relative-caret-position="465">
+              <caret line="106" column="54" lean-forward="false" selection-start-line="106" selection-start-column="54" selection-end-line="106" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -49,39 +47,11 @@
       <file leaf-file-name="complet_gag.tpl" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/frontend/gag/complet_gag.tpl">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2142">
-              <caret line="207" column="98" lean-forward="false" selection-start-line="207" selection-start-column="88" selection-end-line="207" selection-end-column="98" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.tpl" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/frontend/index.tpl">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="38" column="22" lean-forward="false" selection-start-line="38" selection-start-column="22" selection-end-line="38" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GagView.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DotKernel/frontend/views/GagView.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2992">
-              <caret line="176" column="68" lean-forward="false" selection-start-line="176" selection-start-column="68" selection-end-line="176" selection-end-column="68" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IndexController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controllers/frontend/IndexController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="663">
-              <caret line="48" column="10" lean-forward="false" selection-start-line="48" selection-start-column="10" selection-end-line="48" selection-end-column="10" />
-              <folding />
+            <state relative-caret-position="629">
+              <caret line="49" column="5" lean-forward="true" selection-start-line="18" selection-start-column="4" selection-end-line="49" selection-end-column="5" />
+              <folding>
+                <marker date="1505231482323" expanded="true" signature="5816:5830" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -89,8 +59,8 @@
       <file leaf-file-name="Gag.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DotKernel/frontend/Gag.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-469">
-              <caret line="168" column="91" lean-forward="false" selection-start-line="168" selection-start-column="91" selection-end-line="168" selection-end-column="91" />
+            <state relative-caret-position="227">
+              <caret line="210" column="54" lean-forward="true" selection-start-line="210" selection-start-column="54" selection-end-line="210" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -99,28 +69,8 @@
       <file leaf-file-name="View.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DotKernel/frontend/View.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1904">
-              <caret line="120" column="71" lean-forward="false" selection-start-line="120" selection-start-column="71" selection-end-line="120" selection-end-column="71" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controllers/frontend/UserController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3706">
-              <caret line="227" column="44" lean-forward="false" selection-start-line="227" selection-start-column="44" selection-end-line="227" selection-end-column="44" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="user_details.tpl" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/frontend/user/user_details.tpl">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="36" column="7" lean-forward="false" selection-start-line="36" selection-start-column="7" selection-end-line="36" selection-end-column="7" />
+            <state relative-caret-position="357">
+              <caret line="131" column="64" lean-forward="false" selection-start-line="131" selection-start-column="63" selection-end-line="131" selection-end-column="64" />
               <folding />
             </state>
           </provider>
@@ -129,8 +79,8 @@
       <file leaf-file-name="menu_top.tpl" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/frontend/blocks/menu_top.tpl">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="24" column="58" lean-forward="false" selection-start-line="24" selection-start-column="43" selection-end-line="24" selection-end-column="58" />
+            <state relative-caret-position="-221">
+              <caret line="11" column="54" lean-forward="true" selection-start-line="11" selection-start-column="54" selection-end-line="11" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -153,16 +103,16 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/templates/frontend/gag/gag_list.tpl" />
-        <option value="$PROJECT_DIR$/DotKernel/frontend/views/GagView.php" />
-        <option value="$PROJECT_DIR$/templates/frontend/gag/complet_gag.tpl" />
         <option value="$PROJECT_DIR$/templates/css/frontend/style.css" />
         <option value="$PROJECT_DIR$/templates/frontend/user/user_details.tpl" />
         <option value="$PROJECT_DIR$/controllers/frontend/UserController.php" />
-        <option value="$PROJECT_DIR$/templates/frontend/blocks/menu_top.tpl" />
-        <option value="$PROJECT_DIR$/DotKernel/frontend/View.php" />
+        <option value="$PROJECT_DIR$/DotKernel/frontend/views/GagView.php" />
         <option value="$PROJECT_DIR$/templates/frontend/index.tpl" />
+        <option value="$PROJECT_DIR$/templates/frontend/gag/gag_list.tpl" />
+        <option value="$PROJECT_DIR$/templates/frontend/gag/complet_gag.tpl" />
+        <option value="$PROJECT_DIR$/DotKernel/frontend/View.php" />
         <option value="$PROJECT_DIR$/DotKernel/frontend/Gag.php" />
+        <option value="$PROJECT_DIR$/templates/frontend/blocks/menu_top.tpl" />
         <option value="$PROJECT_DIR$/controllers/frontend/GagController.php" />
       </list>
     </option>
@@ -176,7 +126,7 @@
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
     <option name="x" value="1358" />
-    <option name="y" value="-90" />
+    <option name="y" value="-266" />
     <option name="width" value="1296" />
     <option name="height" value="1000" />
   </component>
@@ -553,12 +503,13 @@
       <workItem from="1503423821124" duration="4997000" />
       <workItem from="1503482803875" duration="21000" />
       <workItem from="1504956394348" duration="12992000" />
-      <workItem from="1504971637715" duration="3189000" />
+      <workItem from="1504971637715" duration="3820000" />
+      <workItem from="1505230372877" duration="7286000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47541000" />
+    <option name="totallyTimeSpent" value="55458000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -570,12 +521,12 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1358" y="-90" width="1296" height="1000" extended-state="6" />
+    <frame x="1358" y="-266" width="1296" height="1000" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18671875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921347" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -607,41 +558,11 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/templates/frontend/gag/complet_gag.tpl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1717">
-          <caret line="101" column="20" lean-forward="false" selection-start-line="101" selection-start-column="20" selection-end-line="101" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/frontend/GagController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1360">
-          <caret line="80" column="57" lean-forward="false" selection-start-line="80" selection-start-column="57" selection-end-line="80" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DotKernel/frontend/views/GagView.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="78" lean-forward="false" selection-start-line="21" selection-start-column="78" selection-end-line="21" selection-end-column="78" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DotKernel/frontend/Gag.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1258">
-          <caret line="74" column="42" lean-forward="false" selection-start-line="74" selection-start-column="42" selection-end-line="74" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/frontend/gag/complet_gag.tpl">
-      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1683">
           <caret line="99" column="37" lean-forward="false" selection-start-line="99" selection-start-column="37" selection-end-line="99" selection-end-column="37" />
-          <folding />
+          <folding>
+            <marker date="1505231482323" expanded="true" signature="5816:5830" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -672,7 +593,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1071">
           <caret line="63" column="28" lean-forward="false" selection-start-line="63" selection-start-column="28" selection-end-line="63" selection-end-column="28" />
-          <folding />
+          <folding>
+            <marker date="1505231482323" expanded="true" signature="5816:5830" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -703,7 +626,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2295">
           <caret line="135" column="39" lean-forward="false" selection-start-line="135" selection-start-column="39" selection-end-line="135" selection-end-column="39" />
-          <folding />
+          <folding>
+            <marker date="1505231482323" expanded="true" signature="5816:5830" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -750,7 +675,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="18" column="25" lean-forward="true" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
-          <folding />
+          <folding>
+            <marker date="1505231482323" expanded="true" signature="5816:5830" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -797,7 +724,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2312">
           <caret line="136" column="58" lean-forward="true" selection-start-line="136" selection-start-column="58" selection-end-line="136" selection-end-column="58" />
-          <folding />
+          <folding>
+            <marker date="1505231482323" expanded="true" signature="5816:5830" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -890,26 +819,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DotKernel/frontend/views/GagView.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2992">
-          <caret line="176" column="68" lean-forward="false" selection-start-line="176" selection-start-column="68" selection-end-line="176" selection-end-column="68" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/frontend/IndexController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="663">
           <caret line="48" column="10" lean-forward="false" selection-start-line="48" selection-start-column="10" selection-end-line="48" selection-end-column="10" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/frontend/gag/gag_list.tpl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="652">
-          <caret line="95" column="48" lean-forward="false" selection-start-line="95" selection-start-column="17" selection-end-line="95" selection-end-column="48" />
         </state>
       </provider>
     </entry>
@@ -944,22 +858,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/frontend/blocks/menu_top.tpl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="24" column="58" lean-forward="false" selection-start-line="24" selection-start-column="43" selection-end-line="24" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DotKernel/frontend/View.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1904">
-          <caret line="120" column="71" lean-forward="false" selection-start-line="120" selection-start-column="71" selection-end-line="120" selection-end-column="71" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/frontend/UserController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3706">
@@ -968,34 +866,100 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/frontend/index.tpl">
+    <entry file="file://$PROJECT_DIR$/DotKernel/frontend/views/GagView.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="38" column="22" lean-forward="false" selection-start-line="38" selection-start-column="22" selection-end-line="38" selection-end-column="22" />
+        <state relative-caret-position="697">
+          <caret line="41" column="74" lean-forward="false" selection-start-line="41" selection-start-column="74" selection-end-line="41" selection-end-column="74" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/frontend/gag/complet_gag.tpl">
+    <entry file="file://$PROJECT_DIR$/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2142">
-          <caret line="207" column="98" lean-forward="false" selection-start-line="207" selection-start-column="88" selection-end-line="207" selection-end-column="98" />
+        <state relative-caret-position="-113">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/frontend/index.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="13" lean-forward="true" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/frontend/gag/delete_gag.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/frontend/gag/delete_comment.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/frontend/gag/gag_list_by_user.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/frontend/gag/gag_list.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DotKernel/frontend/View.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="131" column="64" lean-forward="false" selection-start-line="131" selection-start-column="63" selection-end-line="131" selection-end-column="64" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DotKernel/frontend/Gag.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-469">
-          <caret line="168" column="91" lean-forward="false" selection-start-line="168" selection-start-column="91" selection-end-line="168" selection-end-column="91" />
+        <state relative-caret-position="227">
+          <caret line="210" column="54" lean-forward="true" selection-start-line="210" selection-start-column="54" selection-end-line="210" selection-end-column="54" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/frontend/blocks/menu_top.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-221">
+          <caret line="11" column="54" lean-forward="true" selection-start-line="11" selection-start-column="54" selection-end-line="11" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/frontend/gag/complet_gag.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="49" column="5" lean-forward="true" selection-start-line="18" selection-start-column="4" selection-end-line="49" selection-end-column="5" />
+          <folding>
+            <marker date="1505231482323" expanded="true" signature="5816:5830" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/frontend/GagController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="103" column="21" lean-forward="false" selection-start-line="103" selection-start-column="21" selection-end-line="103" selection-end-column="21" />
+        <state relative-caret-position="465">
+          <caret line="106" column="54" lean-forward="false" selection-start-line="106" selection-start-column="54" selection-end-line="106" selection-end-column="54" />
           <folding />
         </state>
       </provider>

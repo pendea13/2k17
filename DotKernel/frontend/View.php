@@ -121,9 +121,17 @@ class View extends Dot_Template
 			$this->setVar('USERNAME_LOGGED', $session->user->username);
             $this->setVar('NOTIFICATIONS', $value['count']);
             $this->parse('news_block', '');
+            $updateNews="";
             foreach ($value['news'] as $news)
-//            Zend_Debug::dump($news); exit();
             {
+                if ($news["new"]=='1'){
+                    if ($updateNews==""){
+                        $updateNews=$news['id'];
+                    }else {
+
+                        $updateNews=$updateNews.','.$news['id'];
+                    }
+                }
                 $this->setVar('NEWS_ID_USER_MADE', $news['id_user_made']);
                 $this->setVar('NEWS_USERNAME', $news['username']);
                 $this->setVar('NEWS_URLIMAGE', $news['urlimage']);
@@ -136,8 +144,10 @@ class View extends Dot_Template
                 }
                 $this->parse('news_block', 'news', true);
             }
+            $this->setVar('UPDATE_NEWS', $updateNews);
+//                Zend_Debug::dump($updateNews); exit();
 
-			$this->parse('top_menu_not_logged_block', '');		
+            $this->parse('top_menu_not_logged_block', '');
 		}
 		else
 		{

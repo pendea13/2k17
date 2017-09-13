@@ -30,7 +30,7 @@ class Gag_View extends View
                         switch ($like['like']) {
 
                             case '1':
-                                $this->tpl->setVar('USER_LIKED', 'color:red;');
+                                $this->tpl->setVar('USER_LIKED', 'active');
                                 $this->tpl->setVar('USER_DISLIKE', '');
                                 break;
                             case '0':
@@ -39,7 +39,7 @@ class Gag_View extends View
                                 break;
                             case '-1':
                                 $this->tpl->setVar('USER_LIKED', '');
-                                $this->tpl->setVar('USER_DISLIKE', 'color:red;');
+                                $this->tpl->setVar('USER_DISLIKE', 'active');
                                 break;
                         }
                     } else {

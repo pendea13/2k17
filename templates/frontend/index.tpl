@@ -13,6 +13,8 @@
 	<link rel="stylesheet" href="{SITE_URL}/externals/fonts/stylesheet.css" type="text/css" >
 	<script src="{SITE_URL}/externals/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="{TEMPLATES_URL}/js/frontend/main.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+	</script>
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	<!--[if lt IE 9]>
 	<script src="{TEMPLATES_URL}/js/frontend/html5shim.js"></script>

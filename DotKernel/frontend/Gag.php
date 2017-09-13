@@ -207,6 +207,9 @@ class Gag extends Dot_Model
 	    return $result;
 
 	}
+	public  function updateNews($data,$id){
+        $this->db->update('news', $data, 'id = '.$id);
+    }
 	//get gag user id
     public function getGagUserId($id)
     {
